@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String
+  password String
+}
+
+// there should be page for a section : hardcoded in frontend
+model Section {
+  id               String             @id @default(uuid())
+  title            String
+  description      String
+  yearBasedSection YearBasedSection[]
+}
+
+model YearBasedSection {
+  id          String  @id @default(uuid())
+  year        Int
+  title       String
+  description String
+  totalTests  Int
+  imageUrl    String
+  sectionId   String
+  Section     Section @relation(fields: [sectionId], references: [id])
+  test        Test[]
+}
+
+model Test {
+  id                 String           @id @default(uuid())
+  type               TestType
+  title              String
+  language           String
+  questions          Int
+  time               Int
+  yearBasedSectionId String
+  mcq                Mcq[]
+  YearBasedSection   YearBasedSection @relation(fields: [yearBasedSectionId], references: [id])
+}
+
+model Mcq {
+  id       String   @id @default(uuid())
+  title    String
+  metadata Json // if they are similar to most pages then hardcode in FE
+  options  String[]
+  testId   String
+  Test     Test     @relation(fields: [testId], references: [id])
+}
+
+enum TestType {
+  FULL_LENGTH
+  SECTIONAL
+}
