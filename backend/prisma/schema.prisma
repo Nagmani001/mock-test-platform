@@ -14,54 +14,103 @@ datasource db {
 }
 
 model User {
+  id         String       @id @default(uuid())
+  name       String
+  email      String
+  password   String
+  TestAnswer TestAnswer[]
+}
+
+model Admin {
   id       String @id @default(uuid())
   name     String
   email    String
   password String
 }
 
-// there should be page for a section : hardcoded in frontend
 model Section {
-  id               String             @id @default(uuid())
-  title            String
-  description      String
-  yearBasedSection YearBasedSection[]
-}
-
-model YearBasedSection {
-  id          String  @id @default(uuid())
-  year        Int
-  title       String
-  description String
-  totalTests  Int
-  imageUrl    String
-  sectionId   String
-  Section     Section @relation(fields: [sectionId], references: [id])
-  test        Test[]
+  id       String @id @default(uuid())
+  title    String
+  imageUrl String
+  tests    Test[]
 }
 
 model Test {
-  id                 String           @id @default(uuid())
-  type               TestType
-  title              String
-  language           String
-  questions          Int
-  time               Int
-  yearBasedSectionId String
-  mcq                Mcq[]
-  YearBasedSection   YearBasedSection @relation(fields: [yearBasedSectionId], references: [id])
+  id              String      @id @default(uuid())
+  title           String
+  totalQuestions  Int
+  language        String
+  totalTimeMinute Int         @default(0)
+  totalTimeSecond Int         @default(0)
+  totalTimeHour   Int         @default(0)
+  question        Question[]
+  Section         Section     @relation(fields: [sectionId], references: [id])
+  sectionId       String
+  TestAnswer      TestAnswer?
 }
 
-model Mcq {
-  id       String   @id @default(uuid())
-  title    String
-  metadata Json // if they are similar to most pages then hardcode in FE
-  options  String[]
-  testId   String
-  Test     Test     @relation(fields: [testId], references: [id])
+model Question {
+  id           String    @id @default(uuid())
+  question     String
+  type         TestType
+  words        Int       @default(100)
+  successMarks Int
+  failureMarks Int
+  testId       String
+  Test         Test      @relation(fields: [testId], references: [id])
+  solution     Solution?
+}
+
+model TestAnswer {
+  id              String     @id @default(uuid())
+  type            AnswerType
+  remainingSecond Int
+  remainingMinute Int
+  remainingHour   Int
+  userId          String
+  testId          String     @unique
+  solution        Solution[]
+  Test            Test       @relation(fields: [testId], references: [id])
+  User            User       @relation(fields: [userId], references: [id])
+}
+
+model Solution {
+  id                 String         @id @default(uuid())
+  answer             String
+  wordsNumber        Int
+  solutionTimeMinute Int
+  solutionTimeSecond Int
+  solutionTimeHour   Int
+  status             SolutionStatus
+  questionId         String         @unique
+  testAnswerId       String
+  TesaAnswer         TestAnswer     @relation(fields: [testAnswerId], references: [id])
+  question           Question       @relation(fields: [questionId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  stars     Int
+  meaning   String
+  timeStamp DateTime @default(now())
+  message   String?
+}
+
+enum AnswerType {
+  Paused
+  Completed
 }
 
 enum TestType {
-  FULL_LENGTH
-  SECTIONAL
+  ESSAY
+  LETTER
+  COMPREHENSION
+}
+
+enum SolutionStatus {
+  Answered
+  Not_Answered
+  Not_Visited
+  Marked_For_Review
+  Answered_And_Marked_For_Review
 }

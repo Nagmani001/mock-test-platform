@@ -1,44 +1,26 @@
 import express, { Request, response, Response } from "express";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import { userRouter } from "./routes/user";
+import { testRouter } from "./routes/test";
+import { reviewRouter } from "./routes/review";
 
 
+declare global {
+  namespace Express {
+    interface Request {
+      userId: string;
+    }
+  }
+}
 const app = express();
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 app.use(express.json());
+app.use(cors());
 
-
-// one more when user clicks on a specific yearBasedSection 
-app.get("/yearBasedTest", async (req: Request, res: Response) => {
-  const { section } = req.body();
-  const ans = await prisma.yearBasedSection.findMany({
-    where: {
-      sectionId: section
-    },
-  });
-  console.log(response);
-  res.json({
-    msg: "sent data",
-    data: ans
-  });
-});
-
-
-app.get("/tests", async (req: Request, res: Response) => {
-  const { yearBasedId } = req.body();
-
-  const ans = await prisma.test.findMany({
-    where: {
-      yearBasedSectionId: yearBasedId
-    },
-  });
-  console.log(response);
-  res.json({
-    msg: "sent data",
-    data: ans
-  });
-});
-
-
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/test", testRouter);
+app.use("/api/v1/review", reviewRouter);
 
 
 

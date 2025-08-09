@@ -1,13 +1,22 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SbiPo from "./pages/sbi-po-mocktest";
+import Landing from "./pages/landing";
+import Signup from "./pages/signup";
+import Signin from "./pages/signin";
+import Tests from "./pages/test";
+import Arena from "./pages/arena";
 
 export default function App() {
-  return <div>
+  return <>
+
     <BrowserRouter>
       <Routes>
-        <Route path="/sbi-po-mock-test" element={<SbiPo />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/tests" element={<Tests />} />
+        <Route path="/tests/:id" element={<Arena />} />
       </Routes>
     </BrowserRouter>
-  </div>
+  </>
 }
 

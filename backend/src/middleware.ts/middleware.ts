@@ -1,0 +1,24 @@
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config/utils";
+
+export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+  const token = req.headers["authorization"];
+  if (!token) {
+    res.json({
+      msg: "invalid auth"
+    });
+    return;
+  }
+  try {
+    const verifyToken = jwt.verify(token, JWT_SECRET);
+    //@ts-ignore
+    req.userId = verifyToken;
+    next();
+  } catch (err) {
+    res.json({
+      msg: "invalid auth"
+    });
+    return;
+  }
+}
