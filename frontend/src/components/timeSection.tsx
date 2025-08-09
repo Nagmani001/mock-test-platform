@@ -4,6 +4,7 @@ import FailBadge from "./failBadge";
 import MarkedForReview from "./markedForReview";
 import NotVisited from "./notVisited";
 import AnsweredAndMarkedForReview from "./answeredAndMarkedForReview";
+import { SectionWritingFailBadge } from "./sectionWritingBadges";
 
 export default function TimerSection() {
   return (
@@ -43,37 +44,37 @@ export default function TimerSection() {
         {/* Status Grid */}
         <div className="p-3 space-y-2">
           <div className="grid grid-cols-2 gap-2">
-            <div className="flex items-center space-x-2 bg-green-50 rounded-md p-2 border border-green-200">
-              <div className="w-6 h-7">
+            <div className="flex items-center space-x-2 bg-green-100 rounded-md p-2 border border-green-300">
+              <div className="w-6 h-7 flex items-center justify-center">
                 <Badge number={0} />
               </div>
               <span className="font-medium text-gray-700 text-xs">Answered</span>
             </div>
 
-            <div className="flex items-center space-x-2 bg-red-50 rounded-md p-2 border border-red-200">
-              <div className="w-6 h-7">
+            <div className="flex items-center space-x-2 bg-red-100 rounded-md p-2 border border-red-300">
+              <div className="w-6 h-7 flex items-center justify-center">
                 <FailBadge number={0} />
               </div>
               <span className="font-medium text-gray-700 text-xs">Not Answered</span>
             </div>
 
-            <div className="flex items-center space-x-2 bg-yellow-50 rounded-md p-2 border border-yellow-200">
-              <div className="w-6 h-7">
+            <div className="flex items-center space-x-2 bg-yellow-100 rounded-md p-2 border border-yellow-300">
+              <div className="w-6 h-7 flex items-center justify-center">
                 <NotVisited number={0} />
               </div>
               <span className="font-medium text-gray-700 text-xs">Not Visited</span>
             </div>
 
-            <div className="flex items-center space-x-2 bg-blue-50 rounded-md p-2 border border-blue-200">
-              <div className="w-6 h-7">
+            <div className="flex items-center space-x-2 bg-blue-100 rounded-md p-2 border border-blue-300">
+              <div className="w-6 h-7 flex items-center justify-center">
                 <MarkedForReview number={0} />
               </div>
               <span className="font-medium text-gray-700 text-xs">Marked For Review</span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 bg-purple-50 rounded-md p-2 border border-purple-200">
-            <div className="w-6 h-7">
+          <div className="flex items-center space-x-2 bg-purple-100 rounded-md p-2 border border-purple-300">
+            <div className="w-6 h-7 flex items-center justify-center">
               <AnsweredAndMarkedForReview number={0} />
             </div>
             <span className="font-medium text-gray-700 text-xs">Answered and Marked For Review</span>
@@ -88,13 +89,13 @@ export default function TimerSection() {
         </div>
         <div className="flex-1 grid grid-cols-3 gap-3 p-4 bg-blue-50">
           <div className="flex justify-center items-center">
-            <FailBadge number={0} />
+            <SectionWritingFailBadge number={0} />
           </div>
           <div className="flex justify-center items-center">
-            <FailBadge number={0} />
+            <SectionWritingFailBadge number={0} />
           </div>
           <div className="flex justify-center items-center">
-            <FailBadge number={0} />
+            <SectionWritingFailBadge number={0} />
           </div>
         </div>
       </div>

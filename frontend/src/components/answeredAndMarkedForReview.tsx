@@ -2,7 +2,7 @@ import { FaList } from "react-icons/fa";
 
 export default function AnsweredAndMarkedForReview({ number }: { number: number }) {
   return (
-    <div className="relative w-[24px] h-[28px]">
+    <div className="relative w-[24px] h-[28px] flex items-center justify-center">
       <svg viewBox="0 0 38 47" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
         <defs>
           <linearGradient id="grad-purple-answered" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -29,8 +29,8 @@ export default function AnsweredAndMarkedForReview({ number }: { number: number 
           {number}
         </text>
       </svg>
-      <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-sm flex items-center justify-center border border-white shadow-sm">
-        <FaList className="text-white text-[8px]" />
+      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-sm flex items-center justify-center border border-white shadow-sm">
+        <FaList className="text-white text-[10px]" />
       </div>
     </div>
   );
