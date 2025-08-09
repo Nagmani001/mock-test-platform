@@ -70,23 +70,33 @@ export default function Arena() {
     main();
   }, []);
 
-  return <div className="h-screen ">
-    <div className="h-[8%]">
-      <ArenaNav title={questionInfo.title} name="Nagmani Upadhyay" />
-    </div>
-    <div className="flex h-[84%] ">
-      <div className="basis-[80%] ">
-        <SecondaryNav />
-        <hr className="border-t border-slate-300 " />
-        <LeftPanel />
+  return (
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+      {/* Header */}
+      <div className="flex-shrink-0 h-20 bg-white shadow-sm border-b border-gray-200">
+        <ArenaNav title={questionInfo.title} name="Nagmani Upadhyay" />
       </div>
-      <div className="basis-[20%]">
-        <TimerSection />
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex min-h-0">
+        {/* Left Panel */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <SecondaryNav />
+          <div className="flex-1 bg-white shadow-sm">
+            <LeftPanel />
+          </div>
+        </div>
+
+        {/* Right Panel - Timer Section */}
+        <div className="w-80 flex-shrink-0 bg-white shadow-lg border-l border-gray-200">
+          <TimerSection />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex-shrink-0 h-16 bg-white shadow-sm border-t border-gray-200">
+        <ArenaFooter />
       </div>
     </div>
-    <hr className="border-t border-slate-300 " />
-    <div className="flex flex-col justify-center h-[8%]">
-      <ArenaFooter />
-    </div>
-  </div >
+  );
 }

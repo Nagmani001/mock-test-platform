@@ -71,16 +71,26 @@ export default function Timer({ hour, minute }: {
       })
     }, 60 * 60 * 1000);
   }, []);
-  return <div className="bg-red-50">
-    <div className="flex mt-8 justify-center gap-x-3 text-3xl">
-      <div>{time.hour} <span>:</span></div>
-      <div>{time.minute} <span>:</span></div>
-      <div>{time.second} </div>
+  
+  return (
+    <div className="text-center py-4">
+      {/* Timer Display */}
+      <div className="flex justify-center items-center space-x-2">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 shadow-md">
+          <div className="text-2xl font-bold text-white">{time.hour.toString().padStart(2, '0')}</div>
+          <div className="text-xs text-blue-100 font-medium">H</div>
+        </div>
+        <div className="text-2xl font-bold text-gray-400">:</div>
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 shadow-md">
+          <div className="text-2xl font-bold text-white">{time.minute.toString().padStart(2, '0')}</div>
+          <div className="text-xs text-blue-100 font-medium">M</div>
+        </div>
+        <div className="text-2xl font-bold text-gray-400">:</div>
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 shadow-md">
+          <div className="text-2xl font-bold text-white">{time.second.toString().padStart(2, '0')}</div>
+          <div className="text-xs text-blue-100 font-medium">S</div>
+        </div>
+      </div>
     </div>
-    <div className="flex justify-center gap-x-5 ">
-      <div>Hour</div>
-      <div>Minute</div>
-      <div>Second</div>
-    </div>
-  </div>
+  );
 }

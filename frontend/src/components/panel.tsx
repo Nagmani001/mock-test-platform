@@ -7,23 +7,26 @@ import { currentSectionAtom, questionAtom } from "@/atom/atom";
 export default function LeftPanel() {
   const questionInfo = useAtomValue(questionAtom);
   const currentSection = useAtomValue(currentSectionAtom);
-  return <div>
-    <PanelGroup direction="horizontal">
-      <Panel defaultSize={50}>
-        {questionInfo.question.map(x => {
-          if (x.type == currentSection) {
-            return <QuestionPanel question={x.question} />
-          }
-        })}
-      </Panel>
-      <PanelResizeHandle className="w-2 h-full bg-slate-300" />
-      <Panel defaultSize={50}>
-        {questionInfo.question.map(x => {
-          if (x.type == currentSection) {
-            return <AnserPanel words={x.words} />
-          }
-        })}
-      </Panel>
-    </PanelGroup>
-  </div>
+  
+  return (
+    <div className="h-full">
+      <PanelGroup direction="horizontal" className="h-full">
+        <Panel defaultSize={50} className="min-w-0">
+          {questionInfo.question.map(x => {
+            if (x.type == currentSection) {
+              return <QuestionPanel key={x.id} question={x.question} />
+            }
+          })}
+        </Panel>
+        <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-gray-300 transition-colors duration-200" />
+        <Panel defaultSize={50} className="min-w-0">
+          {questionInfo.question.map(x => {
+            if (x.type == currentSection) {
+              return <AnserPanel key={x.id} words={x.words} />
+            }
+          })}
+        </Panel>
+      </PanelGroup>
+    </div>
+  );
 }

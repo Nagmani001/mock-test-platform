@@ -1,7 +1,7 @@
 
 const FailBadge = ({ number }: { number: number }) => {
   return (
-    <div className="w-[38px] h-[47px]">
+    <div className="w-[24px] h-[28px]">
       <svg viewBox="0 0 38 47" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
         <defs>
           <linearGradient id="grad-red" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -21,9 +21,10 @@ const FailBadge = ({ number }: { number: number }) => {
           y="45%"
           textAnchor="middle"
           fill="white"
-          fontSize="18"
+          fontSize="12"
           fontWeight="bold"
           fontFamily="Arial"
+          className="font-semibold text-lg"
         >
           {number}
         </text>

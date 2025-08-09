@@ -16,39 +16,71 @@ export function DialogDemo() {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button variant="secondary">Pause Test</Button>
+          <Button 
+            variant="outline" 
+            className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:border-white/50 transition-all duration-200"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              strokeWidth="1.5" 
+              stroke="currentColor" 
+              className="w-4 h-4 mr-2"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" 
+              />
+            </svg>
+            Pause Test
+          </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-white rounded-xl shadow-2xl border border-gray-200">
           <DialogHeader>
-            <DialogTitle>Do you want to pause the test ?</DialogTitle>
+            <DialogTitle className="text-xl font-bold text-gray-800">Pause Test</DialogTitle>
           </DialogHeader>
-          <DialogFooter>
+          <div className="py-4">
+            <p className="text-gray-600">Are you sure you want to pause the test? You can resume it later.</p>
+          </div>
+          <DialogFooter className="flex space-x-3">
             <DialogClose asChild>
-              <Button variant="outline">No</Button>
+              <Button 
+                variant="outline" 
+                className="px-6 py-2 bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
+              >
+                Cancel
+              </Button>
             </DialogClose>
-            <Button onClick={async () => {
-              try {
-                // managing state first 
-                await axios.post(`${BASE_URL}/api/v1/test/pause`, {
-                  remainingHour: 0,
-                  type: "Paused",
-                  remainingMinute: 10,
-                  remainingSecond: 40,
-                  testId: "c431d030-f17d-4397-9d7b-cbb1ab8e06b5",
-                  solution: [{
-                    questionId: "b310448f-c10f-484e-8c20-cd591efcb564",
-                    answer: "this is example essay ",
-                    wordsNumber: 100,
-                    solutionTimeHour: 0,
-                    solutionTimeMinute: 10,
-                    solutionTimeSecond: 4,
-                    status: "Answered"
-                  }]
-                });
-              } catch (err) {
-                console.log(err);
-              }
-            }}> Yes</Button>
+            <Button 
+              onClick={async () => {
+                try {
+                  // managing state first 
+                  await axios.post(`${BASE_URL}/api/v1/test/pause`, {
+                    remainingHour: 0,
+                    type: "Paused",
+                    remainingMinute: 10,
+                    remainingSecond: 40,
+                    testId: "c431d030-f17d-4397-9d7b-cbb1ab8e06b5",
+                    solution: [{
+                      questionId: "b310448f-c10f-484e-8c20-cd591efcb564",
+                      answer: "this is example essay ",
+                      wordsNumber: 100,
+                      solutionTimeHour: 0,
+                      solutionTimeMinute: 10,
+                      solutionTimeSecond: 4,
+                      status: "Answered"
+                    }]
+                  });
+                } catch (err) {
+                  console.log(err);
+                }
+              }}
+              className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white hover:from-yellow-500 hover:to-yellow-600"
+            >
+              Pause Test
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>
