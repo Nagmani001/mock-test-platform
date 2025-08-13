@@ -1,12 +1,17 @@
 import { atom } from "jotai";
 
+export const testTimerAtom = atom({
+  hour: 1,
+  minute: 1,
+  second: 5
+});
+
+export const questionTimeAtom = atom([]);
+export const answerAtom = atom([]);
 
 export const currentSectionAtom = atom("ESSAY");
-export const questionTime = atom();
 
 
-export const questionMinuteAtom = atom(0);
-export const questionSecondAtom = atom(0);
 // locked
 export const questionAtom = atom({
   id: "",

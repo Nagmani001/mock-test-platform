@@ -31,19 +31,52 @@ testRouter.get("/:testId", async (req: Request, res: Response) => {
 
 
 testRouter.post("/submit", authMiddleware, async (req: Request, res: Response) => {
-  const parsedData = pauseOrSubmitSchema.safeParse(req.body);
+
   const userId = req.userId;
+  const userName = await prisma.user.findFirst({
+    where: {
+      id: userId
+    },
+  });
+  const parsedData = pauseOrSubmitSchema.safeParse(req.body);
+
   if (!parsedData.success) {
     res.json({
       msg: "invalid data"
     });
     return;
   };
+  const testId = parsedData.data.testId;
+
+
+  const fetchTestName = await prisma.test.findFirst({
+    where: {
+      id: testId
+    },
+    include: {
+      question: true
+    }
+  });
+  console.log(fetchTestName);
+  if (!fetchTestName || !userName) {
+    res.status(400).json({
+      msg: "something went wrong "
+    });
+    return;
+  }
+
   try {
     const submit = await prisma.testAnswer.create({
       data: {
         type: "Completed",
         remainingHour: parsedData.data.remainingHour,
+        name: userName.name,
+        testTitle: fetchTestName.title,
+        totalQuestions: fetchTestName.question.length,
+        totalTimeHour: fetchTestName.totalTimeHour,
+        totalTimeMinute: fetchTestName.totalTimeMinute,
+        totalTimeSecond: fetchTestName.totalTimeSecond,
+        submittedAt: parsedData.data.submittedAt,
         remainingMinute: parsedData.data.remainingMinute,
         remainingSecond: parsedData.data.remainingSecond,
         userId,
@@ -53,6 +86,7 @@ testRouter.post("/submit", authMiddleware, async (req: Request, res: Response) =
         }
       }
     });
+
     res.json({
       msg: "submitted"
     });
@@ -74,13 +108,45 @@ testRouter.post("/pause", authMiddleware, async (req: Request, res: Response) =>
     });
     return;
   };
+
+  const userName = await prisma.user.findFirst({
+    where: {
+      id: userId
+    },
+  });
+
+  const testId = parsedData.data.testId;
+
+
+  const fetchTestName = await prisma.test.findFirst({
+    where: {
+      id: testId
+    },
+    include: {
+      question: true
+    }
+  });
+  if (!fetchTestName || !userName) {
+    res.status(400).json({
+      msg: "something went wrong "
+    });
+    return;
+  }
   try {
     const submit = await prisma.testAnswer.create({
       data: {
         type: "Paused",
         remainingHour: parsedData.data.remainingHour,
         remainingMinute: parsedData.data.remainingMinute,
+        submittedAt: parsedData.data.submittedAt,
         remainingSecond: parsedData.data.remainingSecond,
+
+        totalTimeHour: fetchTestName.totalTimeHour,
+        totalTimeMinute: fetchTestName.totalTimeMinute,
+        totalTimeSecond: fetchTestName.totalTimeSecond,
+        name: userName.name,
+        testTitle: fetchTestName.title,
+        totalQuestions: fetchTestName.question.length,
         userId,
         testId: parsedData.data.testId,
         solution: {

@@ -1,4 +1,6 @@
-export default function MarkedForReview({ number }: {
+import React from "react";
+
+function MarkedForReview({ number }: {
   number: number
 }) {
   return (
@@ -32,3 +34,4 @@ export default function MarkedForReview({ number }: {
     </div>
   );
 }
+export default React.memo(MarkedForReview);

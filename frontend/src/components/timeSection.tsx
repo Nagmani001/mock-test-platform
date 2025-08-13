@@ -4,9 +4,12 @@ import FailBadge from "./failBadge";
 import MarkedForReview from "./markedForReview";
 import NotVisited from "./notVisited";
 import AnsweredAndMarkedForReview from "./answeredAndMarkedForReview";
-import { SectionWritingFailBadge } from "./sectionWritingBadges";
+import { SectionWritingAnsweredMarkedBadge, SectionWritingBadge, SectionWritingFailBadge, SectionWritingMarkedBadge, SectionWritingNotVisitedBadge } from "./sectionWritingBadges";
+import { useAtomValue } from "jotai";
+import { answerAtom } from "@/atom/atom";
 
 export default function TimerSection() {
+  const answer = useAtomValue(answerAtom);
   return (
     <div className="h-full flex flex-col bg-gray-50">
       {/* Timer Header */}
@@ -32,7 +35,7 @@ export default function TimerSection() {
 
       {/* Timer Display */}
       <div className="">
-        <Timer hour={1} minute={2} />
+        <Timer />
       </div>
 
       {/* Instructions */}
@@ -83,20 +86,41 @@ export default function TimerSection() {
       </div>
 
       {/* Section Writing - Takes more space */}
-      <div className="flex-1 bg-white border-t border-gray-200 flex flex-col">
+      <div className="  border-t border-gray-200 flex flex-col ">
         <div className="flex justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 font-semibold">
           Section Writing
         </div>
-        <div className="flex-1 grid grid-cols-3 gap-3 p-4 bg-blue-50">
-          <div className="flex justify-center items-center">
-            <SectionWritingFailBadge number={0} />
-          </div>
-          <div className="flex justify-center items-center">
-            <SectionWritingFailBadge number={0} />
-          </div>
-          <div className="flex justify-center items-center">
-            <SectionWritingFailBadge number={0} />
-          </div>
+        <div className="flex-1 grid grid-cols-3 gap-3 p-4 ">
+
+          {answer.map((x: any, i: any) => {
+            switch (x.status) {
+              case "Answered":
+                return <div className="flex justify-center items-center">
+                  <SectionWritingBadge number={i + 1} />
+                </div>
+
+              case "Not_Answered":
+                return <div className="flex justify-center items-center">
+                  <SectionWritingFailBadge number={i + 1} />
+                </div>
+
+              case "Not_Visited":
+                return <div className="flex justify-center items-center">
+                  <SectionWritingNotVisitedBadge number={i + 1} />
+                </div>
+
+              case "Marked_For_Review":
+                return <div className="flex justify-center items-center">
+                  <SectionWritingMarkedBadge number={i + 1} />
+                </div>
+
+              case "Answered_And_Marked_For_Review":
+                return <div className="flex justify-center items-center">
+                  <SectionWritingAnsweredMarkedBadge number={i + 1} />
+                </div>
+
+            }
+          })}
         </div>
       </div>
     </div>

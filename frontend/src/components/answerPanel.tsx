@@ -1,18 +1,18 @@
 import { useAtom, useAtomValue } from "jotai";
 import { Textarea } from "./ui/textarea";
-import { currentSectionAtom, questionAtom } from "@/atom/atom";
+import { answerAtom, currentSectionAtom } from "@/atom/atom";
 
 export default function AnserPanel({ words }: {
-  words: number
+  words: number,
 }) {
-  const [questionInfo, setQuestionInfo] = useAtom(questionAtom);
+  const [answer, setAnswer] = useAtom(answerAtom);
   const currentSection = useAtomValue(currentSectionAtom);
-  const currentAnswer = questionInfo.question.filter(x => x.type == currentSection)[0]?.answer || '';
 
-  let wordsArr = "sadf".split(" ");
+  //@ts-ignore
+  let wordsArr = answer.find((x: any) => x.type == currentSection)?.answer.split(" ");
   let wordsLength = wordsArr.length;
   const remainingWords = words - wordsLength + 1;
-  
+
   return (
     <div className="h-full flex flex-col bg-gray-50">
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-4">
@@ -20,15 +20,26 @@ export default function AnserPanel({ words }: {
       </div>
       <div className="flex-1 p-6 flex flex-col">
         <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          {questionInfo.question.map(x => {
+          {answer.map((x: any) => {
             if (x.type == currentSection) {
               return (
-                <Textarea 
+                <Textarea
                   key={x.id}
                   onChange={(e: any) => {
-                    // Handle change logic here
+                    setAnswer((prev: any) => {
+                      const newArr = prev.map((y: any) => {
+                        if (y.id == x.id) {
+                          return {
+                            ...y,
+                            answer: e.target.value,
+                            wordsTyped: wordsLength
+                          }
+                        } else { return y }
+                      })
+                      return newArr;
+                    });
                   }}
-                  value={currentAnswer}
+                  value={x.answer}
                   placeholder="Start typing your answer here..."
                   className="h-full resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
                 />

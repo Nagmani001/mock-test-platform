@@ -1,32 +1,115 @@
+import { answerAtom, currentSectionAtom } from "@/atom/atom";
 import { BASE_URL } from "@/config/utils";
 import axios from "axios";
+import { useAtom } from "jotai";
+import React from "react";
 
-export default function ArenaFooter() {
+function ArenaFooter() {
+  const [answer, setAnswer] = useAtom(answerAtom);
+  const [currentSection, setCurrentSection] = useAtom(currentSectionAtom);
   return (
     <div className="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
       <div className="flex items-center space-x-4">
-        <button 
+        <button
           onClick={() => {
-            // Handle mark for review and next
-          }} 
+            answer.map((x: any) => {
+              if (x.type == currentSection) {
+                if (x.answer == "") {
+                  setAnswer((prev: any) => {
+                    const newArr = prev.map((x: any) => {
+                      if (x.type == currentSection) {
+                        return { ...x, status: "Marked_For_Review" }
+                      } else {
+                        return x
+                      }
+                    });
+                    return newArr;
+                  });
+
+                } else {
+
+                  setAnswer((prev: any) => {
+                    const newArr = prev.map((x: any) => {
+                      if (x.type == currentSection) {
+                        return { ...x, status: "Answered_And_Marked_For_Review" }
+                      } else {
+                        return x
+                      }
+                    });
+                    return newArr;
+                  });
+
+                }
+              }
+            })
+            //TODO: add logic for more next  
+            if (currentSection == "ESSAY") {
+              setCurrentSection("LETTER");
+            } else if (currentSection == "LETTER") {
+              setCurrentSection("ESSAY")
+            }
+          }}
           className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white font-semibold rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105"
         >
           Mark for Review & Next
         </button>
-        <button 
+        <button
           onClick={() => {
-            // Handle clear response
-          }} 
+            setAnswer((prev: any) => {
+              const newArr = prev.map((x: any) => {
+                if (x.type == currentSection) {
+                  return { ...x, answer: "" }
+                } else { return x }
+              });
+              return newArr;
+            });
+          }}
           className="px-6 py-2 bg-gradient-to-r from-gray-400 to-gray-500 text-white font-semibold rounded-lg shadow-md hover:from-gray-500 hover:to-gray-600 transition-all duration-200 transform hover:scale-105"
         >
           Clear Response
         </button>
       </div>
       <div className="flex items-center space-x-4">
-        <button 
+        <button
           onClick={() => {
-            // Handle next
-          }} 
+            answer.map((x: any) => {
+              if (x.type == currentSection) {
+                if (x.answer == "") {
+                  setAnswer((prev: any) => {
+                    const newArr = prev.map((x: any) => {
+                      if (x.type == currentSection) {
+                        return { ...x, status: "Not_Answered" }
+                      } else {
+                        return x
+                      }
+                    });
+                    return newArr;
+                  });
+
+                } else {
+
+                  setAnswer((prev: any) => {
+                    const newArr = prev.map((x: any) => {
+                      if (x.type == currentSection) {
+                        return { ...x, status: "Answered" }
+                      } else {
+                        return x
+                      }
+                    });
+                    return newArr;
+                  });
+
+                }
+
+                //TODO: add logic for more next  
+                if (currentSection == "ESSAY") {
+                  setCurrentSection("LETTER");
+                } else if (currentSection == "LETTER") {
+                  setCurrentSection("ESSAY")
+                }
+              }
+            })
+          }}
           className="px-8 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105"
         >
           Next
@@ -63,3 +146,4 @@ export default function ArenaFooter() {
     </div>
   );
 }
+export default React.memo(ArenaFooter);

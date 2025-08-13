@@ -1,79 +1,40 @@
-import { useEffect, useState } from "react"
+import { testTimerAtom } from "@/atom/atom";
+import { useAtom } from "jotai";
+import { useEffect } from "react"
 
-export default function Timer({ hour, minute }: {
-  hour: number,
-  minute: number,
-}) {
-  const [time, setTime] = useState({
-    hour,
-    minute,
-    second: 59
-  });
+export default function Timer() {
+
+  const [time, setTime] = useAtom(testTimerAtom);
 
   useEffect(() => {
-    /* setTimeout(() => {
-      // send request to backend 
-    }, (hour * 60 * 60 * 1000 + minute * 60 * 1000 + second * 1000));
-    */
-    const secondIntervalId = setInterval(() => {
-      if (time.second == 0) {
-        clearInterval(secondIntervalId)
-      }
+    const totalSeconds =
+      time.hour * 3600 + time.minute * 60 + time.second;
 
-      if (time.second > 0) {
-        time.second--;
-      }
-      if (time.second == 0 && time.minute > 0) {
-        time.second = 59
-      }
-      console.log("second", time.second);
+    if (totalSeconds <= 0) return;
+    const interval = setInterval(() => {
       setTime((prev) => {
-        return {
-          ...prev,
-          second: time.second
+        const prevTotal = prev.hour * 3600 + prev.minute * 60 + prev.second;
+        const newTotal = prevTotal - 1;
+
+        if (newTotal <= 0) {
+          clearInterval(interval);
+          return { hour: 0, minute: 0, second: 0 };
         }
-      })
+
+        const h = Math.floor(newTotal / 3600);
+        const m = Math.floor((newTotal % 3600) / 60);
+        const s = newTotal % 60;
+
+        return { hour: h, minute: m, second: s };
+      });
     }, 1000);
 
-    const minuteIntervalId = setInterval(() => {
-      if (time.minute == 0) {
-        clearInterval(minuteIntervalId)
-      }
-      if (time.minute > 0) {
-        time.minute--;
-      }
-      if (time.minute == 0 && time.hour > 0) {
-        time.minute = 59
-      }
+    return () => clearInterval(interval);
+  }, [time]);
 
-      console.log("minute", minute);
-      setTime((prev) => {
-        return {
-          ...prev,
-          minute: time.minute
-        }
-      })
-    }, 60 * 1000);
 
-    const hourIntervalId = setInterval(() => {
-      if (hour == 0) {
-        clearInterval(hourIntervalId)
-      }
-      if (time.hour > 0) {
-        time.hour--;
-      }
-      console.log("hour", hour);
-      setTime((prev) => {
-        return {
-          ...prev,
-          hour: time.hour
-        }
-      })
-    }, 60 * 60 * 1000);
-  }, []);
-  
   return (
-    <div className="text-center py-4">
+    <div className="text-center py-4 ">
       {/* Timer Display */}
       <div className="flex justify-center items-center space-x-2">
         <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 shadow-md">

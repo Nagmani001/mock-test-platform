@@ -1,4 +1,6 @@
-export default function NotVisited({ number }: {
+import React from "react";
+
+function NotVisited({ number }: {
   number: number
 }) {
   return (
@@ -32,3 +34,4 @@ export default function NotVisited({ number }: {
     </div>
   );
 }
+export default React.memo(NotVisited);

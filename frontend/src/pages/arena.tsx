@@ -7,42 +7,19 @@ import ArenaFooter from "../components/arenaFooter";
 import TimerSection from "../components/timeSection";
 import SecondaryNav from "../components/secondaryNav";
 import LeftPanel from "@/components/panel";
-import { useAtom } from "jotai";
-import { questionAtom } from "@/atom/atom";
-
-/*
-interface Question {
-  id: string,
-  title: string,
-  totalTimeHour: 0,
-  totalTimeMinute: 0,
-  totalTimeSecond: 0,
-  question: [{
-    id: string,
-    question: string,
-    type: string,
-    words: 0,
-    successMarks: 0,
-    failureMarks: 0,
-  }, {
-    id: string,
-    question: string,
-    type: string,
-    words: 0,
-    successMarks: 0,
-    failureMarks: 0,
-  }]
-}
-*/
+import { useAtom, useSetAtom } from "jotai";
+import { answerAtom, questionAtom } from "@/atom/atom";
 
 export default function Arena() {
   const questionId = useParams();
   const [questionInfo, setQuestionInfo] = useAtom(questionAtom);
+  const setAnswer = useSetAtom(answerAtom);
   useEffect(() => {
     const main = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/api/v1/test/${questionId.id}`);
         const { id, title, totalTimeHour, totalTimeMinute, totalTimeSecond, question } = res.data.msg;
+
 
         const actualQuestion = question.map((x: any) => {
           return {
@@ -51,9 +28,23 @@ export default function Arena() {
             type: x.type,
             words: x.words,
             successMarks: x.successMarks,
-            failureMarks: x.failureMarks
+            failureMarks: x.failureMarks,
+            questionTimeHour: x.questionTimeHour,
+            questionTimeMinute: x.questionTimeMinute,
           }
         });
+        setAnswer(actualQuestion.map((x: any) => {
+          return {
+            id: x.id, // questionId
+            words: x.words, // words allowed
+            answer: "",
+            type: x.type,
+            status: "Not_Visited",
+            questionTimeHour: x.questionTimeHour,
+            questionTimeMinute: x.questionTimeMinute,
+            //TODO: you want solution time : hour , minute and second
+          }
+        }));
         setQuestionInfo({
           id,
           title,
@@ -62,7 +53,6 @@ export default function Arena() {
           totalTimeSecond,
           question: actualQuestion
         });
-        console.log("nagmani", questionInfo);
       } catch (err) {
         console.log("error", err);
       }

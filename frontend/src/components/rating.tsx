@@ -26,7 +26,6 @@ export default function Rating() {
       try {
         const ratings = await axios.get(`${BASE_URL}/api/v1/review`);
         setReview(ratings.data.msg);
-        console.log("reviews", reviews);
       } catch (err) {
         console.log(err);
       }

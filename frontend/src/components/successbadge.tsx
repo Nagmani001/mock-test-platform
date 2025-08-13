@@ -1,3 +1,5 @@
+import React from "react";
+
 const Badge = ({ number }: { number: number }) => {
   return (
     <div className="w-[24px] h-[28px]">
@@ -36,4 +38,4 @@ const Badge = ({ number }: { number: number }) => {
   );
 };
 
-export default Badge;
+export default React.memo(Badge);

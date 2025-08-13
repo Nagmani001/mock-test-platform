@@ -15,8 +15,6 @@ export default function SecondaryNav() {
             <button
               key={question.id}
               onClick={() => {
-                console.log(question.id);
-                console.log(question.type)
                 setCurrentSection(question.type);
               }}
               className={clsx(
@@ -26,7 +24,7 @@ export default function SecondaryNav() {
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm"
               )}
             >
-              {question.type == "ESSAY" ? "Essay" : question.type == "LETTER" ? "Letter" : "Comprehension"} Writing
+              {findSection(question.type)}
             </button>
           );
         })}
@@ -52,4 +50,13 @@ export default function SecondaryNav() {
       </div>
     </div>
   );
+}
+function findSection(section: string) {
+  if (section == "LETTER") {
+    return "Letter Writing"
+  } else if (section == "ESSAY") {
+    return "Essay Writing"
+  } else if (section == "COMPREHENSION") {
+    return "Comprehension Writing"
+  }
 }

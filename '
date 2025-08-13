@@ -1,0 +1,53 @@
+import { Router, Request, Response } from "express";
+import { prisma } from "..";
+
+export const submissionRouter = Router();
+
+
+interface Submissions {
+  userName: string,
+  testTitle: string,
+  submittedAt: string,
+  score?: number,
+  status: string,
+  totalQuestions: number,
+  timeSpent: string
+
+}
+submissionRouter.get("/getAll", async (req: Request, res: Response) => {
+  const findSubmissionl = await prisma.testAnswer.findMany({});
+
+  const data: Submissions[] = [];
+
+  //@ts-ignore
+  console.log(findSubmissionl);
+  findSubmissionl.map(x => {
+    const toPush = {
+      id: x.id,
+      userName: x.name,
+      testTitle: x.testTitle,
+      submittedAt: x.submittedAt,
+
+
+    };
+    data.push(toPush);
+  });
+
+  res.json({
+    id: '1',
+  })
+
+  /*
+   *
+      id: '1',
+      userName: 'John Doe',
+      testTitle: 'Advanced React Concepts',
+      submittedAt: '2024-01-15T10:30:00Z',
+
+      score: 85,
+      status: 'graded',
+      timeSpent: '45m 30s'
+
+      totalQuestions: 10,
+   */
+});

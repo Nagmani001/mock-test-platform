@@ -1,6 +1,7 @@
+import React from "react";
 import { FaList } from "react-icons/fa";
 
-export default function AnsweredAndMarkedForReview({ number }: { number: number }) {
+function AnsweredAndMarkedForReview({ number }: { number: number }) {
   return (
     <div className="relative w-[24px] h-[28px] flex items-center justify-center">
       <svg viewBox="0 0 38 47" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -35,3 +36,4 @@ export default function AnsweredAndMarkedForReview({ number }: { number: number 
     </div>
   );
 }
+export default React.memo(AnsweredAndMarkedForReview);

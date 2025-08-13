@@ -7,7 +7,7 @@ import { currentSectionAtom, questionAtom } from "@/atom/atom";
 export default function LeftPanel() {
   const questionInfo = useAtomValue(questionAtom);
   const currentSection = useAtomValue(currentSectionAtom);
-  
+
   return (
     <div className="h-full">
       <PanelGroup direction="horizontal" className="h-full">

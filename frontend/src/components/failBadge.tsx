@@ -1,3 +1,4 @@
+import React from "react";
 
 const FailBadge = ({ number }: { number: number }) => {
   return (
@@ -33,4 +34,4 @@ const FailBadge = ({ number }: { number: number }) => {
   );
 };
 
-export default FailBadge;
+export default React.memo(FailBadge);

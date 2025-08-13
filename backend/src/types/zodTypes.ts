@@ -1,4 +1,15 @@
 import { z } from "zod";
+
+
+export const signupAdminSchema = z.object({
+  email: z.string(),
+  name: z.string(),
+  password: z.string(),
+  adminCreatePassword: z.string()
+});
+
+
+
 export const signupSchema = z.object({
   email: z.string(),
   name: z.string(),
@@ -22,6 +33,7 @@ export const pauseOrSubmitSchema = z.object({
   remainingMinute: z.number(),
   remainingSecond: z.number(),
   testId: z.string(),
+  submittedAt: z.string(),
   solution: z.array(z.object({
     questionId: z.string(),
     answer: z.string(),
@@ -29,46 +41,45 @@ export const pauseOrSubmitSchema = z.object({
     solutionTimeHour: z.number(),
     solutionTimeMinute: z.number(),
     solutionTimeSecond: z.number(),
+    score: z.number().optional(),
     status: z.enum(["Answered", "Not_Answered", "Not_Visited", "Marked_For_Review", "Answered_And_Marked_For_Review"]),
   })),
 });
 
-
-/*
-model TestAnswer {
-  id              String     @id @default(uuid())
-  remainingSecond Int
-  remainingMinute Int
-  remainingHour   Int
-  userId          String
-  testId          String     @unique
-  solution        Solution[]
-  Test            Test       @relation(fields: [testId], references: [id])
-  User            User       @relation(fields: [userId], references: [id])
-}
-
-model Solution {
-  id                 String         @id @default(uuid())
-  answer             String
-  wordsNumber        Int
-  solutionTimeMinute Int
-  solutionTimeSecond Int
-  solutionTimeHour   Int
-  status             SolutionStatus
-  questionId         String         @unique
-  testAnswerId       String
-  TesaAnswer         TestAnswer     @relation(fields: [testAnswerId], references: [id])
-  question           Question       @relation(fields: [questionId], references: [id])
-}
- */
+export const createTestSchema = z.object({
+  title: z.string(),
+  totalQuestions: z.number(),
+  language: z.string(),
+  totalTimeHour: z.number(),
+  totalTimeMinute: z.number(),
+  totalTimeSecond: z.number(),
+  sectionId: z.string(),
+  questions: z.array(z.object({
+    question: z.string(),
+    type: z.enum(["ESSAY", "LETTER", "COMPREHENSION"]),
+    words: z.number(),
+    successMarks: z.number(),
+    failureMarks: z.number(),
+  }))
+});
 
 
 /*
-enum SolutionStatus {
-  Answered
-  Not_Answered
-  Not_Visited
-  Marked_For_Review
-  Answered_And_Marked_For_Review
+  ESSAY
+  LETTER
+  COMPREHENSION
+
+model Question {
+  id                 String    @id @default(uuid())
+  question           String
+  type               TestType
+  words              Int
+  questionTimeHour   Int       @default(0)
+  questionTimeMinute Int       @default(0)
+  successMarks       Int
+  failureMarks       Int
+  testId             String
+  Test               Test      @relation(fields: [testId], references: [id])
+  solution           Solution?
 }
  */
