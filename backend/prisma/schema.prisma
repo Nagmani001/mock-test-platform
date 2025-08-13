@@ -56,8 +56,8 @@ model Question {
   passingMarks       Int
   type               TestType
   words              Int
-  questionTimeSecond Int
-  questionTimeMinute Int
+  questionTimeSecond Int?
+  questionTimeMinute Int?
   successMarks       Int
   failureMarks       Int
   testId             String

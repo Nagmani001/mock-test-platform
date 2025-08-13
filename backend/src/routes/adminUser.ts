@@ -8,8 +8,6 @@ import { JWT_SECRET } from "../config/utils";
 export const adminUserRouter = Router();
 
 adminUserRouter.post("/signup", async (req, res) => {
-
-
   const parsedData = signupAdminSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.status(400).json({

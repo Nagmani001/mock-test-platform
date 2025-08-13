@@ -9,6 +9,8 @@ interface Question {
   question: string;
   type: string;
   words: number;
+  totalMarks: number;
+  passingMarks: number;
   successMarks: number;
   failureMarks: number;
 }
@@ -61,7 +63,9 @@ const CreateProblemPage: React.FC = () => {
       type: 'Multiple Choice',
       words: 100,
       successMarks: 10,
-      failureMarks: 0
+      failureMarks: 0,
+      passingMarks: 0,
+      totalMarks: 0
     };
     setQuestions(prev => [...prev, newQuestion]);
     setTestData(prev => ({ ...prev, totalQuestions: prev.totalQuestions + 1 }));
@@ -348,6 +352,32 @@ const CreateProblemPage: React.FC = () => {
                         min="0"
                         value={question.failureMarks}
                         onChange={(e) => updateQuestion(question.id, 'failureMarks', parseInt(e.target.value) || 0)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Total Marks
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={question.totalMarks}
+                        onChange={(e) => updateQuestion(question.id, 'totalMarks', parseInt(e.target.value) || 0)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Passing Marks
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={question.passingMarks}
+                        onChange={(e) => updateQuestion(question.id, 'passingMarks', parseInt(e.target.value) || 0)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>

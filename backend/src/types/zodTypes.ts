@@ -57,29 +57,19 @@ export const createTestSchema = z.object({
   questions: z.array(z.object({
     question: z.string(),
     type: z.enum(["ESSAY", "LETTER", "COMPREHENSION"]),
+    totalMarks: z.number(),
+    passingMarks: z.number(),
     words: z.number(),
     successMarks: z.number(),
     failureMarks: z.number(),
+    questionTimeMinute: z.number().optional(),
+    questionTimeSecond: z.number().optional(),
   }))
 });
 
 
 /*
-  ESSAY
-  LETTER
-  COMPREHENSION
-
-model Question {
-  id                 String    @id @default(uuid())
-  question           String
-  type               TestType
-  words              Int
-  questionTimeHour   Int       @default(0)
-  questionTimeMinute Int       @default(0)
-  successMarks       Int
-  failureMarks       Int
-  testId             String
-  Test               Test      @relation(fields: [testId], references: [id])
-  solution           Solution?
+  questionTimeSecond Int
+  questionTimeMinute Int
 }
  */
