@@ -37,28 +37,21 @@ webhookRouter.post("/", async (req: Request, res: Response) => {
       "svix-signature": svix_signature
     });
     if (event.type == "user.created") {
-      console.log(event.data.email_addresses);
-      /*
       await prisma.user.create({
         data: {
           id: event.data.id,
           name: event.data.username ? event.data.username : event.data.first_name + event.data.last_name,
-          email: event.data.email_addresses,
+          email: event.data.email_addresses[0].email_address,
           password: event.data.first_name + "dummy_password" + event.data.last_name
         }
       });
-      */
     }
   } catch (err) {
     console.log(err);
     res.json({
       msg: "error occured"
     });
-
   }
-
-
-
 
   console.log(req.body);
   res.json({

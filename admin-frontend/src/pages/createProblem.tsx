@@ -81,33 +81,6 @@ const CreateProblemPage: React.FC = () => {
     ));
   };
 
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!testData.title.trim()) {
-      newErrors.title = 'Test title is required';
-    }
-
-    if (!testData.sectionId) {
-      newErrors.sectionId = 'Section selection is required';
-    }
-
-    if (questions.length === 0) {
-      newErrors.questions = 'At least one question is required';
-    }
-
-    questions.forEach((question, index) => {
-      if (!question.question.trim()) {
-        newErrors[`question_${index}`] = 'Question text is required';
-      }
-      if (question.successMarks <= 0) {
-        newErrors[`marks_${index}`] = 'Success marks must be greater than 0';
-      }
-    });
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -182,7 +155,7 @@ const CreateProblemPage: React.FC = () => {
                 value={testData.sectionId}
                 onChange={(e) => {
                   if (e.target.value == "Descriptive writing") {
-                    handleTestDataChange('sectionId', "c83f4ce7-0396-4089-bc9c-e4a81c514456")
+                    handleTestDataChange('sectionId', "2cff8ad6-8959-4614-b060-7c9a9bb6a7d0")
                   }
                 }
                 } className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.sectionId ? 'border-red-500' : 'border-gray-300'

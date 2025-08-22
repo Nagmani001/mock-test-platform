@@ -119,10 +119,6 @@ export default function Signup() {
     }
   };
 
-  const handleSocialSignup = (provider: string) => {
-    console.log(`Signup with ${provider}`);
-    alert(`${provider} signup would be implemented here`);
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
