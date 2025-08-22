@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import QuestionTimer from "./questionTimer";
 import { useAtom, useAtomValue } from "jotai";
 import { currentSectionAtom, questionAtom } from "@/atom/atom";
 
@@ -31,10 +30,6 @@ export default function SecondaryNav() {
       </div>
 
       <div className="flex items-center space-x-6">
-        <div className="flex items-center space-x-3 bg-gray-50 rounded-lg px-4 py-2">
-          <div className="font-semibold text-gray-700 text-sm">Question time:</div>
-          <QuestionTimer />
-        </div>
         {questionInfo.question.map(x => {
           if (x.type == currentSection) {
             return (

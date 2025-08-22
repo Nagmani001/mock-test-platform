@@ -10,28 +10,35 @@ import {
 import { Button } from "./ui/button"
 import axios from "axios"
 import { BASE_URL } from "@/config/utils"
+import { useAtomValue } from "jotai"
+import { answerAtom, testTimerAtom } from "@/atom/atom"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
 
-export function DialogDemo() {
+export function DialogDemo({ id }: { id: string | undefined }) {
+  const answer = useAtomValue(answerAtom);
+  const time = useAtomValue(testTimerAtom);
+  const navigate = useNavigate();
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:border-white/50 transition-all duration-200"
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              strokeWidth="1.5" 
-              stroke="currentColor" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
               className="w-4 h-4 mr-2"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z"
               />
             </svg>
             Pause Test
@@ -46,33 +53,41 @@ export function DialogDemo() {
           </div>
           <DialogFooter className="flex space-x-3">
             <DialogClose asChild>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="px-6 py-2 bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
               >
                 Cancel
               </Button>
             </DialogClose>
-            <Button 
+            <Button
               onClick={async () => {
+                const requiredSolution = answer.map((x: any) => {
+                  return {
+                    answer: x.answer,
+                    status: x.status,
+                    questionId: x.id,
+                    wordsNumber: x.answer.split(" ").length
+                  }
+                });
                 try {
                   // managing state first 
-                  await axios.post(`${BASE_URL}/api/v1/test/pause`, {
-                    remainingHour: 0,
+                  await axios.post(`${BASE_URL}/api/v1/test/submit`, {
+                    remainingHour: time.hour,
+                    remainingMinute: time.minute,
+                    remainingSecond: time.second,
                     type: "Paused",
-                    remainingMinute: 10,
-                    remainingSecond: 40,
-                    testId: "c431d030-f17d-4397-9d7b-cbb1ab8e06b5",
-                    solution: [{
-                      questionId: "b310448f-c10f-484e-8c20-cd591efcb564",
-                      answer: "this is example essay ",
-                      wordsNumber: 100,
-                      solutionTimeHour: 0,
-                      solutionTimeMinute: 10,
-                      solutionTimeSecond: 4,
-                      status: "Answered"
-                    }]
+                    testId: id,
+                    submittedAt: new Date(),
+                    solution: requiredSolution
+                  }, {
+                    headers: {
+                      Authorization: localStorage.getItem("token"),
+                    }
                   });
+                  toast.success("Submitted successfully");
+                  alert("submitted successfully");
+                  navigate("/tests");
                 } catch (err) {
                   console.log(err);
                 }

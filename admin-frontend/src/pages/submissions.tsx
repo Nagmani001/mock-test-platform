@@ -10,8 +10,7 @@ interface Submission {
   testTitle: string;
   submittedAt: string;
   score: number;
-  status: 'pending' | 'reviewed' | 'graded';
-  language: string;
+  status: 'pending' | 'graded';
   totalQuestions: number;
   timeSpent: string;
 }
@@ -20,75 +19,17 @@ const SubmissionsPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  const [submission, setSubmissions] = useState({});
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
 
-  console.log("submissions", submission);
   useEffect(() => {
     const main = async () => {
       const submission = await axios.get(`${BASE_URL}/submission/getAll`);
+      console.log(submission.data.msg);
       setSubmissions(submission.data.msg);
-
     }
     main();
   }, []);
-  // Mock data - in a real app, this would come from an API
-  const submissions: Submission[] = [
-    {
-      id: '1',
-      userName: 'John Doe',
-      testTitle: 'Advanced React Concepts',
-      submittedAt: '2024-01-15T10:30:00Z',
-      score: 85,
-      status: 'graded',
-      language: 'JavaScript',
-      totalQuestions: 10,
-      timeSpent: '45m 30s'
-    },
-    {
-      id: '2',
-      userName: 'Jane Smith',
-      testTitle: 'Python Data Structures',
-      submittedAt: '2024-01-15T14:20:00Z',
-      score: 0,
-      status: 'pending',
-      language: 'Python',
-      totalQuestions: 15,
-      timeSpent: '1h 20m'
-    },
-    {
-      id: '3',
-      userName: 'Mike Johnson',
-      testTitle: 'Database Management',
-      submittedAt: '2024-01-14T16:45:00Z',
-      score: 92,
-      status: 'graded',
-      language: 'SQL',
-      totalQuestions: 8,
-      timeSpent: '35m 15s'
-    },
-    {
-      id: '4',
-      userName: 'Sarah Wilson',
-      testTitle: 'Web Development Basics',
-      submittedAt: '2024-01-14T11:15:00Z',
-      score: 0,
-      status: 'reviewed',
-      language: 'HTML/CSS',
-      totalQuestions: 12,
-      timeSpent: '52m 10s'
-    },
-    {
-      id: '5',
-      userName: 'David Brown',
-      testTitle: 'Advanced Algorithms',
-      submittedAt: '2024-01-13T09:30:00Z',
-      score: 78,
-      status: 'graded',
-      language: 'Java',
-      totalQuestions: 6,
-      timeSpent: '1h 5m'
-    }
-  ];
+
 
   const filteredSubmissions = submissions.filter(submission => {
     const matchesSearch = submission.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -181,7 +122,6 @@ const SubmissionsPage: React.FC = () => {
                     <span className="font-semibold text-gray-900">{submission.userName}</span>
                   </div>
                   <p className="text-sm text-gray-600 font-medium">{submission.testTitle}</p>
-                  <p className="text-xs text-gray-500">{submission.language} • {submission.totalQuestions} questions</p>
                 </div>
 
                 {/* Date & Time */}
@@ -209,7 +149,7 @@ const SubmissionsPage: React.FC = () => {
                     <p className="text-sm text-gray-500">Not graded yet</p>
                   )}
                   <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(submission.status)}`}>
-                    {submission.status.charAt(0).toUpperCase() + submission.status.slice(1)}
+                    {submission?.status.charAt(0).toUpperCase() + submission?.status.slice(1)}
                   </span>
                 </div>
 

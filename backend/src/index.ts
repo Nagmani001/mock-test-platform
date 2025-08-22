@@ -7,6 +7,7 @@ import { reviewRouter } from "./routes/review";
 import { adminUserRouter } from "./routes/adminUser";
 import { adminRouter } from "./routes/admin";
 import { submissionRouter } from "./routes/viewSubmission";
+import { feedbackRouter } from "./routes/feedback";
 
 
 declare global {
@@ -21,12 +22,17 @@ export const prisma = new PrismaClient();
 app.use(express.json());
 app.use(cors());
 
+// user side routes
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/test", testRouter);
 app.use("/api/v1/review", reviewRouter);
+
+
+// admin side routes
 app.use("/api/v1/admin/user", adminUserRouter);
 app.use("/api/v1/admin/", adminRouter);
 app.use("/api/v1/admin/submission", submissionRouter);
+app.use("/api/v1/admin/feedback", feedbackRouter);
 
 
 

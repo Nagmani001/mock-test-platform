@@ -37,7 +37,6 @@ adminRouter.post("/create-test", async (req: Request, res: Response) => {
     await prisma.test.create({
       data: {
         title: parsedData.data.title,
-        language: parsedData.data.language,
         totalQuestions: parsedData.data.totalQuestions,
         totalTimeHour: parsedData.data.totalTimeHour,
         totalTimeMinute: parsedData.data.totalTimeMinute,
@@ -52,6 +51,7 @@ adminRouter.post("/create-test", async (req: Request, res: Response) => {
       msg: "test created successfully"
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       msg: "something went wrong, invalid data "
     })

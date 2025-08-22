@@ -1,3 +1,5 @@
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+
 export default function Nav() {
   return <div className="flex justify-around shadow-xl p-3">
     <img src="https://guidely.in/assets/images/home/guidely-logo.svg" />
@@ -36,13 +38,13 @@ export default function Nav() {
         </div>
       </form>
     </div>
-    <div className="flex gap-x-2 items-center">
-      <div className="h-10 w-10 bg-slate-300 rounded-full flex justify-center items-center">
-        <div className="flex flex-col justify-center items-center">
-          N
-        </div>
+    <SignedIn>
+      <UserButton />
+    </SignedIn>
+    <SignedOut>
+      <div className="rounded-xl px-5 py-2 border hover:bg-slate-100 cursor-pointer ">
+        <SignInButton />
       </div>
-      <div>Nagmani Upadhyay</div>
-    </div>
+    </SignedOut>
   </div>
 }

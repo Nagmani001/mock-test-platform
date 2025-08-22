@@ -1,3 +1,4 @@
+// TODO : zod validation in frontend 
 import React, { useState } from 'react';
 import { Plus, Trash2, Save, AlertCircle } from 'lucide-react';
 import axios from 'axios';
@@ -10,7 +11,6 @@ interface Question {
   type: string;
   words: number;
   totalMarks: number;
-  passingMarks: number;
   successMarks: number;
   failureMarks: number;
 }
@@ -60,11 +60,10 @@ const CreateProblemPage: React.FC = () => {
     const newQuestion: Question = {
       id: Date.now().toString(),
       question: '',
-      type: 'Multiple Choice',
+      type: 'ESSAY',
       words: 100,
       successMarks: 10,
       failureMarks: 0,
-      passingMarks: 0,
       totalMarks: 0
     };
     setQuestions(prev => [...prev, newQuestion]);
@@ -82,22 +81,46 @@ const CreateProblemPage: React.FC = () => {
     ));
   };
 
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!testData.title.trim()) {
+      newErrors.title = 'Test title is required';
+    }
+
+    if (!testData.sectionId) {
+      newErrors.sectionId = 'Section selection is required';
+    }
+
+    if (questions.length === 0) {
+      newErrors.questions = 'At least one question is required';
+    }
+
+    questions.forEach((question, index) => {
+      if (!question.question.trim()) {
+        newErrors[`question_${index}`] = 'Question text is required';
+      }
+      if (question.successMarks <= 0) {
+        newErrors[`marks_${index}`] = 'Success marks must be greater than 0';
+      }
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("i ran");
 
     const finalData = {
       ...testData,
       questions
     };
     console.log('Creating test:', finalData);
-    // In a real app, this would make an API call
     try {
       await axios.post(`${BASE_URL}/create-test`, {
         title: finalData.title,
         totalQuestions: finalData.totalQuestions,
-        language: "English",
         totalTimeHour: finalData.totalTimeHour,
         totalTimeMinute: finalData.totalTimeMinute,
         totalTimeSecond: finalData.totalTimeSecond,
@@ -116,7 +139,7 @@ const CreateProblemPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Create New Problem</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Create New Test</h1>
         <p className="text-gray-600">Design a comprehensive test with multiple questions</p>
       </div>
 
@@ -159,7 +182,7 @@ const CreateProblemPage: React.FC = () => {
                 value={testData.sectionId}
                 onChange={(e) => {
                   if (e.target.value == "Descriptive writing") {
-                    handleTestDataChange('sectionId', "96968375-177c-437c-a6cd-ab5cae73eb19")
+                    handleTestDataChange('sectionId', "c83f4ce7-0396-4089-bc9c-e4a81c514456")
                   }
                 }
                 } className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.sectionId ? 'border-red-500' : 'border-gray-300'
@@ -319,7 +342,6 @@ const CreateProblemPage: React.FC = () => {
                       />
                     </div>
 
-                    {/* Question Time */}
 
                     {/* Success Marks */}
                     <div>
@@ -369,18 +391,6 @@ const CreateProblemPage: React.FC = () => {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Passing Marks
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        value={question.passingMarks}
-                        onChange={(e) => updateQuestion(question.id, 'passingMarks', parseInt(e.target.value) || 0)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>

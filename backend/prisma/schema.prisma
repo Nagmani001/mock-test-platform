@@ -36,73 +36,67 @@ model Section {
 }
 
 model Test {
-  id              String      @id @default(uuid())
+  id              String       @id @default(uuid())
   title           String
   totalQuestions  Int
-  language        String
   totalTimeMinute Int
   totalTimeSecond Int
   totalTimeHour   Int
-  question        Question[]
-  Section         Section     @relation(fields: [sectionId], references: [id])
   sectionId       String
-  TestAnswer      TestAnswer?
+  Section         Section      @relation(fields: [sectionId], references: [id])
+  question        Question[]
+  Test            TestAnswer[] // confused: should be either one to many or 
+  // one to one where the primary id which will come in testAnswer will be combined of userId testId
+  // so that one user can make one submission to one test 
 }
 
 model Question {
-  id                 String    @id @default(uuid())
-  question           String
-  totalMarks         Int
-  passingMarks       Int
-  type               TestType
-  words              Int
-  questionTimeSecond Int?
-  questionTimeMinute Int?
-  successMarks       Int
-  failureMarks       Int
-  testId             String
-  Test               Test      @relation(fields: [testId], references: [id])
-  solution           Solution?
+  id           String     @id @default(uuid())
+  question     String
+  type         TestType
+  words        Int
+  successMarks Int
+  failureMarks Int
+  totalMarks   Int
+  testId       String
+  Test         Test       @relation(fields: [testId], references: [id])
+  solution     Solution[]
 }
 
 model TestAnswer {
   id              String     @id @default(uuid())
-  type            AnswerType
   remainingSecond Int
   remainingMinute Int
   remainingHour   Int
-  name            String
-  testTitle       String
-  totalQuestions  Int
-  totalTimeHour   Int
-  totalTimeMinute Int
-  totalTimeSecond Int
   userId          String
-  testId          String     @unique
+  testId          String
+  type            AnswerType
+  timeSpent       String
   submittedAt     DateTime
+  status          TestStatus @default(pending)
+  percentage      Int?
   solution        Solution[]
-  Test            Test       @relation(fields: [testId], references: [id])
   User            User       @relation(fields: [userId], references: [id])
+  Test            Test       @relation(fields: [testId], references: [id])
 }
 
 model Solution {
-  id                 String         @id @default(uuid())
-  answer             String
-  wordsNumber        Int
-  score              Int?
-  solutionTimeMinute Int
-  solutionTimeSecond Int
-  solutionTimeHour   Int
-  status             SolutionStatus
-  questionId         String         @unique
-  testAnswerId       String
-  TesaAnswer         TestAnswer     @relation(fields: [testAnswerId], references: [id])
-  question           Question       @relation(fields: [questionId], references: [id])
+  id            String         @id @default(uuid())
+  answer        String
+  wordsNumber   Int
+  status        SolutionStatus
+  adminRating   Int?
+  adminFeedBack String?
+  questionId    String
+  testAnswerId  String
+  TesaAnswer    TestAnswer     @relation(fields: [testAnswerId], references: [id])
+  question      Question       @relation(fields: [questionId], references: [id])
 }
 
 model Review {
   id        String   @id @default(uuid())
   stars     Int
+  name      String
   meaning   String
   timeStamp DateTime @default(now())
   message   String?
@@ -117,6 +111,11 @@ enum TestType {
   ESSAY
   LETTER
   COMPREHENSION
+}
+
+enum TestStatus {
+  graded
+  pending
 }
 
 enum SolutionStatus {

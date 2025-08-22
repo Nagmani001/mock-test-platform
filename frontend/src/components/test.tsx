@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 export default function DescriptiveTestCard({
   id,
   title,
-  language,
   questions,
   time,
 }: {
   id: string
   title: string;
-  language: string;
   questions: number;
   time: number;
 }) {
@@ -21,9 +19,6 @@ export default function DescriptiveTestCard({
       <div className="flex justify-between items-center flex-wrap text-sm text-gray-600">
         <div className="flex flex-wrap gap-x-4 gap-y-1">
           <span>
-            <span className="font-medium text-gray-400">Language :</span> {language}
-          </span>
-          <span>
             <span className="font-medium text-gray-400">Questions :</span> {questions}
           </span>
           <span>
@@ -32,8 +27,9 @@ export default function DescriptiveTestCard({
         </div>
         <div className="text-purple-700 font-medium text-sm flex items-center gap-1">
           <button className="cursor-pointer" onClick={() => {
-            navigate(`/tests/${id}`)
+            navigate(`/tests/${id}`);
           }}>Start</button>
+          <button className="text-black cursor-pointer">View Results</button>
         </div>
       </div>
     </div>

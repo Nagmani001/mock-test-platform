@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { prisma } from "..";
 import { reviewSchema } from "../types/zodTypes";
+import { authMiddleware } from "../middleware.ts/middleware";
 
 export const reviewRouter = Router();
 
@@ -12,14 +13,20 @@ reviewRouter.get("/", async (req: Request, res: Response) => {
       stars: "desc"
     }
   });
-  console.log(reviews);
   res.json({
     msg: reviews
   });
 });
 
-reviewRouter.post("/", async (req: Request, res: Response) => {
-  console.log(req.body);
+reviewRouter.post("/", authMiddleware, async (req: Request, res: Response) => {
+  const userId = req.userId;
+  const userDetails = await prisma.user.findFirst({ where: { id: userId } });
+  if (!userDetails) {
+    res.json({
+      msg: "error occured",
+    });
+    return;
+  }
   const parsedData = reviewSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
@@ -32,7 +39,8 @@ reviewRouter.post("/", async (req: Request, res: Response) => {
       data: {
         stars: parsedData.data.stars,
         message: parsedData.data.message,
-        meaning: parsedData.data.meaning
+        meaning: parsedData.data.meaning,
+        name: userDetails?.name
       }
     });
     res.json({

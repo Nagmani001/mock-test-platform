@@ -28,28 +28,25 @@ export const reviewSchema = z.object({
   meaning: z.enum(["Poor", "Needs_Improvement", "Satisfactory", "Good", "Excellent"]),
 });
 
+
 export const pauseOrSubmitSchema = z.object({
   remainingHour: z.number(),
   remainingMinute: z.number(),
   remainingSecond: z.number(),
+  type: z.enum(["Paused", "Completed"]),
   testId: z.string(),
   submittedAt: z.string(),
   solution: z.array(z.object({
-    questionId: z.string(),
     answer: z.string(),
-    wordsNumber: z.number(),
-    solutionTimeHour: z.number(),
-    solutionTimeMinute: z.number(),
-    solutionTimeSecond: z.number(),
-    score: z.number().optional(),
     status: z.enum(["Answered", "Not_Answered", "Not_Visited", "Marked_For_Review", "Answered_And_Marked_For_Review"]),
+    wordsNumber: z.number(),
+    questionId: z.string(),
   })),
 });
 
 export const createTestSchema = z.object({
   title: z.string(),
   totalQuestions: z.number(),
-  language: z.string(),
   totalTimeHour: z.number(),
   totalTimeMinute: z.number(),
   totalTimeSecond: z.number(),
@@ -57,19 +54,22 @@ export const createTestSchema = z.object({
   questions: z.array(z.object({
     question: z.string(),
     type: z.enum(["ESSAY", "LETTER", "COMPREHENSION"]),
-    totalMarks: z.number(),
-    passingMarks: z.number(),
     words: z.number(),
     successMarks: z.number(),
     failureMarks: z.number(),
-    questionTimeMinute: z.number().optional(),
-    questionTimeSecond: z.number().optional(),
+    totalMarks: z.number(),
   }))
 });
 
 
-/*
-  questionTimeSecond Int
-  questionTimeMinute Int
-}
- */
+export const feedBackSchema = z.object({
+  feedbacks: z.array(z.object({
+    key: z.string(),
+    value: z.string(),
+  })),
+  rating: z.array(z.object({
+    key: z.string(),
+    value: z.number(),
+  })),
+  id: z.string()
+});

@@ -7,7 +7,6 @@ export const testRouter = Router();
 
 testRouter.get("/", async (req: Request, res: Response) => {
   const tests = await prisma.test.findMany();
-  console.log(tests);
   res.json({
     tests,
   });
@@ -23,22 +22,15 @@ testRouter.get("/:testId", async (req: Request, res: Response) => {
       question: true
     }
   });
-  console.log(test);
   res.json({
     msg: test
   })
 });
 
-
 testRouter.post("/submit", authMiddleware, async (req: Request, res: Response) => {
 
-  const userId = req.userId;
-  const userName = await prisma.user.findFirst({
-    where: {
-      id: userId
-    },
-  });
   const parsedData = pauseOrSubmitSchema.safeParse(req.body);
+  const userId = req.userId;
 
   if (!parsedData.success) {
     res.json({
@@ -46,39 +38,18 @@ testRouter.post("/submit", authMiddleware, async (req: Request, res: Response) =
     });
     return;
   };
-  const testId = parsedData.data.testId;
 
-
-  const fetchTestName = await prisma.test.findFirst({
-    where: {
-      id: testId
-    },
-    include: {
-      question: true
-    }
-  });
-  console.log(fetchTestName);
-  if (!fetchTestName || !userName) {
-    res.status(400).json({
-      msg: "something went wrong "
-    });
-    return;
-  }
+  const timeSpent = "asdf"
 
   try {
-    const submit = await prisma.testAnswer.create({
+    await prisma.testAnswer.create({
       data: {
-        type: "Completed",
+        timeSpent,
+        type: parsedData.data.type,
         remainingHour: parsedData.data.remainingHour,
-        name: userName.name,
-        testTitle: fetchTestName.title,
-        totalQuestions: fetchTestName.question.length,
-        totalTimeHour: fetchTestName.totalTimeHour,
-        totalTimeMinute: fetchTestName.totalTimeMinute,
-        totalTimeSecond: fetchTestName.totalTimeSecond,
-        submittedAt: parsedData.data.submittedAt,
         remainingMinute: parsedData.data.remainingMinute,
         remainingSecond: parsedData.data.remainingSecond,
+        submittedAt: parsedData.data.submittedAt,
         userId,
         testId: parsedData.data.testId,
         solution: {
@@ -108,45 +79,34 @@ testRouter.post("/pause", authMiddleware, async (req: Request, res: Response) =>
     });
     return;
   };
-
-  const userName = await prisma.user.findFirst({
+  const testDetails = await prisma.test.findFirst({
     where: {
-      id: userId
-    },
-  });
-
-  const testId = parsedData.data.testId;
-
-
-  const fetchTestName = await prisma.test.findFirst({
-    where: {
-      id: testId
-    },
-    include: {
-      question: true
+      id: parsedData.data.testId
     }
   });
-  if (!fetchTestName || !userName) {
-    res.status(400).json({
-      msg: "something went wrong "
-    });
+
+  if (!testDetails) {
     return;
   }
+
+  const totalTimeInSeconds = (testDetails?.totalTimeHour * 3600) + (testDetails.totalTimeMinute * 60) + (testDetails.totalTimeSecond);
+  const remainingTotalTimeInSeconds = (parsedData.data.remainingHour * 3600) + (parsedData.data.remainingMinute * 60) + parsedData.data.remainingSecond;
+  console.log("totalTimeInSeconds", totalTimeInSeconds);
+  console.log("remainingTotalTimeInSeconds ", remainingTotalTimeInSeconds);
+
+
+
+  const timeSpent = "asdf";
+
   try {
-    const submit = await prisma.testAnswer.create({
+    await prisma.testAnswer.create({
       data: {
-        type: "Paused",
+        timeSpent,
         remainingHour: parsedData.data.remainingHour,
         remainingMinute: parsedData.data.remainingMinute,
-        submittedAt: parsedData.data.submittedAt,
+        type: parsedData.data.type,
         remainingSecond: parsedData.data.remainingSecond,
-
-        totalTimeHour: fetchTestName.totalTimeHour,
-        totalTimeMinute: fetchTestName.totalTimeMinute,
-        totalTimeSecond: fetchTestName.totalTimeSecond,
-        name: userName.name,
-        testTitle: fetchTestName.title,
-        totalQuestions: fetchTestName.question.length,
+        submittedAt: parsedData.data.submittedAt,
         userId,
         testId: parsedData.data.testId,
         solution: {

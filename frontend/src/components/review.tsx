@@ -3,10 +3,11 @@ import { Card } from "./ui/card"
 
 export default function Review({ name, date, stars, comment }: {
   name: string,
-  date: string,
+  date: Date,
   stars: number,
   comment: string
 }) {
+  const actualDate = new Date(date).toString().split(" ");
   return <Card>
     <div className="flex flex-col gap-y-3 rounded-lg p-4">
       <div className="flex gap-x-3 items-center ">
@@ -37,10 +38,8 @@ export default function Review({ name, date, stars, comment }: {
                 />
               </svg>
             </div>
-
           </div>
-
-          <div className="text-slate-500">{date}</div>
+          <div className="text-slate-500">{actualDate[0] + " " + actualDate[1] + " " + actualDate[2]}</div>
         </div>
 
       </div>

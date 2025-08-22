@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, BarChart3, Clock, Star } from 'lucide-react';
+import { SignInButton, SignUpButton } from '@clerk/clerk-react';
 
 export default function Landing() {
   return (
@@ -17,19 +18,17 @@ export default function Landing() {
               advanced proctoring, and instant results that help you succeed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/signup"
+              <div
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center group"
               >
-                Start Testing Today
+                <SignUpButton />
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                to="/signin"
+              </div>
+              <div
                 className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors"
               >
-                Sign In
-              </Link>
+                <SignInButton />
+              </div>
             </div>
           </div>
         </div>

@@ -59,7 +59,7 @@ const Layout: React.FC = () => {
                   }`}
               >
                 <Plus className="w-4 h-4" />
-                <span>Create Problem</span>
+                <span>Create Test</span>
               </button>
             </nav>
           </div>

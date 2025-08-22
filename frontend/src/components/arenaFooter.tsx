@@ -1,12 +1,17 @@
-import { answerAtom, currentSectionAtom } from "@/atom/atom";
+import { answerAtom, currentSectionAtom, sectionAtom, testTimerAtom } from "@/atom/atom";
 import { BASE_URL } from "@/config/utils";
 import axios from "axios";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-function ArenaFooter() {
+function ArenaFooter({ id }: { id: string | undefined }) {
   const [answer, setAnswer] = useAtom(answerAtom);
+  const sectionArray = useAtomValue(sectionAtom);
   const [currentSection, setCurrentSection] = useAtom(currentSectionAtom);
+  const navigate = useNavigate();
+  const time = useAtomValue(testTimerAtom);
   return (
     <div className="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
       <div className="flex items-center space-x-4">
@@ -25,9 +30,7 @@ function ArenaFooter() {
                     });
                     return newArr;
                   });
-
                 } else {
-
                   setAnswer((prev: any) => {
                     const newArr = prev.map((x: any) => {
                       if (x.type == currentSection) {
@@ -42,11 +45,14 @@ function ArenaFooter() {
                 }
               }
             })
-            //TODO: add logic for more next  
-            if (currentSection == "ESSAY") {
-              setCurrentSection("LETTER");
-            } else if (currentSection == "LETTER") {
-              setCurrentSection("ESSAY")
+            if (sectionArray[sectionArray.length - 1] == currentSection) {
+              setCurrentSection(sectionArray[0]);
+            } else {
+              sectionArray.forEach((x: any, i: any) => {
+                if (x == currentSection) {
+                  setCurrentSection(sectionArray[i + 1]);
+                }
+              });
             }
           }}
           className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white font-semibold rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105"
@@ -101,11 +107,14 @@ function ArenaFooter() {
 
                 }
 
-                //TODO: add logic for more next  
-                if (currentSection == "ESSAY") {
-                  setCurrentSection("LETTER");
-                } else if (currentSection == "LETTER") {
-                  setCurrentSection("ESSAY")
+                if (sectionArray[sectionArray.length - 1] == currentSection) {
+                  setCurrentSection(sectionArray[0]);
+                } else {
+                  sectionArray.forEach((x: any, i: any) => {
+                    if (x == currentSection) {
+                      setCurrentSection(sectionArray[i + 1]);
+                    }
+                  });
                 }
               }
             })
@@ -116,24 +125,32 @@ function ArenaFooter() {
         </button>
         <button
           onClick={async () => {
+            const requiredSolution = answer.map((x: any) => {
+              return {
+                answer: x.answer,
+                status: x.status,
+                questionId: x.id,
+                wordsNumber: x.answer.split(" ").length
+              }
+            });
             try {
               // managing state first 
               await axios.post(`${BASE_URL}/api/v1/test/submit`, {
-                remainingHour: 0,
+                remainingHour: time.hour,
+                remainingMinute: time.minute,
+                remainingSecond: time.second,
                 type: "Completed",
-                remainingMinute: 10,
-                remainingSecond: 40,
-                testId: "c431d030-f17d-4397-9d7b-cbb1ab8e06b5",
-                solution: [{
-                  questionId: "b310448f-c10f-484e-8c20-cd591efcb564",
-                  answer: "this is example essay ",
-                  wordsNumber: 100,
-                  solutionTimeHour: 0,
-                  solutionTimeMinute: 10,
-                  solutionTimeSecond: 4,
-                  status: "Answered"
-                }]
+                testId: id,
+                submittedAt: new Date(),
+                solution: requiredSolution
+              }, {
+                headers: {
+                  Authorization: localStorage.getItem("token"),
+                }
               });
+              toast.success("Submitted successfully");
+              alert("submitted successfully");
+              navigate("/tests");
             } catch (err) {
               console.log(err);
             }

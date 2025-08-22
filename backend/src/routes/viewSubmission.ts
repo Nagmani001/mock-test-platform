@@ -3,12 +3,13 @@ import { prisma } from "..";
 
 export const submissionRouter = Router();
 
-interface Submissions {
+interface Submission {
+  id: string,
   userName: string,
   testTitle: string,
   submittedAt: string,
   score?: number,
-  status: string,
+  status?: string,
   totalQuestions: number,
   timeSpent: string
 }
@@ -20,49 +21,109 @@ submissionRouter.get("/getAll", async (req: Request, res: Response) => {
     }
   });
 
-  const data: Submissions[] = [];
-
-  findSubmissionl.map(x => {
-    const timeSpentHour = x.totalTimeHour - x.remainingHour;
-    const timeSpentMinute = x.totalTimeMinute - x.remainingMinute;
-    const timeSpentSecond = x.totalTimeSecond - x.remainingSecond;
-
-    let scored = false;
-    let totalMarks = 0;
-    let numberOfQuestion = 0;
-
-    findSubmissionl.map(x => {
-      x.solution.map(y => {
-        if (y.score != null) {
-          scored = true;
-          totalMarks += y.score;
-          numberOfQuestion++;
+  const data = Promise.all(
+    findSubmissionl.map(async (x: any) => {
+      const userDetails = await prisma.user.findFirst({
+        where: {
+          id: x.userId
         }
-      })
-    });
+      });
+      const testDetails = await prisma.test.findFirst({
+        where: {
+          id: x.testId
+        }
+      });
 
-    const percentage = (totalMarks / numberOfQuestion * 100) * 100;
+      if (!userDetails?.name || !testDetails) {
+        res.json({
+          msg: "request failed"
+        })
+        return;
+      }
 
-    const toPush = {
-      id: x.id,
-      userName: x.name,
-      testTitle: x.testTitle,
-      submittedAt: x.submittedAt.toString(),
-      timeSpent: `${timeSpentHour}h ${timeSpentMinute}m ${timeSpentSecond}s`,
-      status: scored ? "graded" : "pending",
-      score: percentage,
-      totalQuestions: numberOfQuestion
-    };
-    data.push(toPush);
+      const newSub: Submission = {
+        id: x.id,
+        userName: userDetails.name,
+        submittedAt: x.submittedAt,
+        timeSpent: x.timeSpent,
+        testTitle: testDetails.title,
+        totalQuestions: testDetails.totalQuestions,
+        score: x.percentage,
+        status: x.status
+      };
+      return newSub;
+    }));
+  const resolvedData = await data;
+
+  res.json({
+    msg: resolvedData
+  })
+});
+
+
+
+submissionRouter.get("/getOne/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const testAnswer = await prisma.testAnswer.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      solution: true
+    }
   });
 
-  res.json(data);
+  const userDetails = await prisma.user.findFirst({
+    where: {
+      id: testAnswer?.userId
+    }
+  });
 
+  const testDetails = await prisma.test.findFirst({
+    where: {
+      id: testAnswer?.testId
+    }
+  });
+
+  if (!testAnswer || !userDetails || !testDetails) {
+    res.json({
+      msg: "error occured"
+    })
+    return;
+  }
+
+  const solution = await Promise.all(testAnswer.solution.map(async (x) => {
+    const questionDetails = await prisma.question.findFirst({ where: { id: x.questionId } });
+
+    return {
+      id: x.id,
+      question: questionDetails?.question,
+      type: questionDetails?.type,
+      words: x.wordsNumber,
+      successMarks: questionDetails?.totalMarks,
+      failureMarks: questionDetails?.failureMarks,
+      userAnswer: x.answer,
+      adminRating: x.adminRating,
+      adminFeedback: x.adminFeedBack
+    }
+  }));
+
+  const toReturn = {
+    id: testAnswer.id,
+    userName: userDetails.name,
+    userEmail: userDetails.email,
+    testTitle: testDetails.title,
+    submittedAt: testAnswer.submittedAt,
+    totalScore: testAnswer.percentage,
+    status: testAnswer.status,
+    totalQuestions: testDetails.totalQuestions,
+    timeSpent: testAnswer.timeSpent,
+    questions: solution
+  }
+  console.log(toReturn);
+  res.json({
+    msg: toReturn
+  })
 });
 
-submissionRouter.get("/getOne/:id", (req: Request, res: Response) => {
-  const id = req.params.id;
 
-
-
-});

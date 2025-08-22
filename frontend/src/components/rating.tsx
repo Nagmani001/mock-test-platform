@@ -13,6 +13,7 @@ interface Review {
   message: string,
   stars: number,
   timeStamp: Date
+  name: string
 }
 export default function Rating() {
   const [comment, setComment] = useState<string | null>("");
@@ -26,6 +27,8 @@ export default function Rating() {
       try {
         const ratings = await axios.get(`${BASE_URL}/api/v1/review`);
         setReview(ratings.data.msg);
+        console.log(typeof reviews);
+        console.log("rating", ratings.data.msg)
       } catch (err) {
         console.log(err);
       }
@@ -73,6 +76,10 @@ export default function Rating() {
           message: comment,
           stars: rating,
           meaning: meaning == "Needs improvement" ? "Needs_Improvement" : meaning
+        }, {
+          headers: {
+            Authorization: localStorage.getItem("token")
+          }
         });
         setLoading(false);
         // not working
@@ -84,7 +91,7 @@ export default function Rating() {
       "Post"
       }</Button>
     {reviews.map((review: Review) => {
-      return <Review name="R20A031 ANUSHA " date="27th Nov 2024" stars={review.stars} comment={review.message} />
+      return <Review name={review.name} date={review.timeStamp} stars={review.stars} comment={review.message} />
     })}
   </div >
 

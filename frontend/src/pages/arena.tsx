@@ -8,19 +8,26 @@ import TimerSection from "../components/timeSection";
 import SecondaryNav from "../components/secondaryNav";
 import LeftPanel from "@/components/panel";
 import { useAtom, useSetAtom } from "jotai";
-import { answerAtom, questionAtom } from "@/atom/atom";
+import { answerAtom, questionAtom, sectionAtom, testTimerAtom } from "@/atom/atom";
 
 export default function Arena() {
   const questionId = useParams();
   const [questionInfo, setQuestionInfo] = useAtom(questionAtom);
   const setAnswer = useSetAtom(answerAtom);
+  const setquestionTimer = useSetAtom(testTimerAtom);
+  const setSection = useSetAtom(sectionAtom);
+
+
   useEffect(() => {
     const main = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/api/v1/test/${questionId.id}`);
+        const array = res.data.msg.question.map((x: any) => {
+          return x.type
+        });
+        setSection(array);
+
         const { id, title, totalTimeHour, totalTimeMinute, totalTimeSecond, question } = res.data.msg;
-
-
         const actualQuestion = question.map((x: any) => {
           return {
             id: x.id,
@@ -29,8 +36,6 @@ export default function Arena() {
             words: x.words,
             successMarks: x.successMarks,
             failureMarks: x.failureMarks,
-            questionTimeHour: x.questionTimeHour,
-            questionTimeMinute: x.questionTimeMinute,
           }
         });
         setAnswer(actualQuestion.map((x: any) => {
@@ -40,11 +45,14 @@ export default function Arena() {
             answer: "",
             type: x.type,
             status: "Not_Visited",
-            questionTimeHour: x.questionTimeHour,
-            questionTimeMinute: x.questionTimeMinute,
             //TODO: you want solution time : hour , minute and second
           }
         }));
+        setquestionTimer({
+          hour: totalTimeHour,
+          minute: totalTimeMinute,
+          second: totalTimeSecond
+        });
         setQuestionInfo({
           id,
           title,
@@ -64,7 +72,7 @@ export default function Arena() {
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 h-20 bg-white shadow-sm border-b border-gray-200">
-        <ArenaNav title={questionInfo.title} name="Nagmani Upadhyay" />
+        <ArenaNav title={questionInfo.title} id={questionId.id} />
       </div>
 
       {/* Main Content Area */}
@@ -85,7 +93,7 @@ export default function Arena() {
 
       {/* Footer */}
       <div className="flex-shrink-0 h-16 bg-white shadow-sm border-t border-gray-200">
-        <ArenaFooter />
+        <ArenaFooter id={questionId.id} />
       </div>
     </div>
   );

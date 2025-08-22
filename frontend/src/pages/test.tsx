@@ -12,8 +12,7 @@ import Nav from "@/components/nav";
 interface Test {
   id: string
   title: string,
-  language: string,
-  questions: number,
+  totalQuestions: number,
   time: number
 }
 export default function Tests() {
@@ -21,7 +20,20 @@ export default function Tests() {
   useEffect(() => {
     const main = async () => {
       const res = await axios.get(`${BASE_URL}/api/v1/test`);
-      setTests(res.data.tests);
+      const newArr = res.data.tests.map((x: any) => {
+        const hour: string = x.totalTimeHour > 0 ? x.totalTimeHour + " Hour" : "";
+        const minute: string = x.totalTimeMinute > 0 ? x.totalTimeMinute + " Minute" : "";
+        const second: string = x.totalTimeSecond > 0 ? x.totalTimeSecond + " Second" : "";
+        // const time = `${Number(hour) > 1 ? hour + "s" : ""} ${Number(minute) > 1 ? minute + "s" : ""} ${Number(second) > 1 ? second + "s" : ""}`;
+        const time = `${hour} ${minute} ${second}`;
+        return {
+          id: x.id,
+          title: x.title,
+          totalQuestions: x.totalQuestions,
+          time,
+        }
+      });
+      setTests(newArr);
     }
     main();
   }, [])
@@ -56,7 +68,7 @@ export default function Tests() {
       <div className="flex mt-5" >
         <div className="flex flex-col items-center gap-y-3">
           {tests.map(test => {
-            return <Test key={test.id} id={test.id} title={test.title} language={test.language} questions={test.questions} time={test.time} />
+            return <Test key={test.id} id={test.id} title={test.title} questions={test.totalQuestions} time={test.time} />
           })}
         </div>
       </div>
@@ -72,7 +84,6 @@ export default function Tests() {
       <Faq heading="8. Is this package suitable for beginners?" subHeading="Absolutely! The Descriptive Writing Test package is designed to cater to all levels. If you’re a beginner, start with the basic practice sets and gradually challenge yourself with more advanced exercises." />
       <Rating />
     </div>
-
     <Footer />
   </div>
 }
