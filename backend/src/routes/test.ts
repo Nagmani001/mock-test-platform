@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { clerkClient, getAuth, requireAuth } from "@clerk/express";
 import { prisma } from "..";
 import { pauseOrSubmitSchema } from "../types/zodTypes";
 import { authMiddleware } from "../middleware.ts/middleware";
@@ -27,17 +28,22 @@ testRouter.get("/:testId", async (req: Request, res: Response) => {
   })
 });
 
-testRouter.post("/submit", authMiddleware, async (req: Request, res: Response) => {
+testRouter.post("/submit", requireAuth(), async (req: Request, res: Response) => {
 
   const parsedData = pauseOrSubmitSchema.safeParse(req.body);
-  const userId = req.userId;
+  const { userId } = getAuth(req);
 
-  if (!parsedData.success) {
+
+
+  if (!parsedData.success || !userId) {
     res.json({
       msg: "invalid data"
     });
     return;
   };
+
+
+  const user = await clerkClient.users.getUser(userId)
 
   const timeSpent = "asdf"
 
@@ -70,15 +76,18 @@ testRouter.post("/submit", authMiddleware, async (req: Request, res: Response) =
   }
 });
 
-testRouter.post("/pause", authMiddleware, async (req: Request, res: Response) => {
+testRouter.post("/pause", requireAuth(), async (req: Request, res: Response) => {
   const parsedData = pauseOrSubmitSchema.safeParse(req.body);
-  const userId = req.userId;
-  if (!parsedData.success) {
+  const { userId } = getAuth(req);
+  if (!parsedData.success || !userId) {
     res.json({
       msg: "invalid data"
     });
     return;
   };
+
+  const user = await clerkClient.users.getUser(userId)
+
   const testDetails = await prisma.test.findFirst({
     where: {
       id: parsedData.data.testId

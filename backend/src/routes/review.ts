@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { prisma } from "..";
 import { reviewSchema } from "../types/zodTypes";
-import { authMiddleware } from "../middleware.ts/middleware";
+import { clerkClient, getAuth, requireAuth } from "@clerk/express";
 
 export const reviewRouter = Router();
 
@@ -18,8 +18,16 @@ reviewRouter.get("/", async (req: Request, res: Response) => {
   });
 });
 
-reviewRouter.post("/", authMiddleware, async (req: Request, res: Response) => {
-  const userId = req.userId;
+reviewRouter.post("/", requireAuth(), async (req: Request, res: Response) => {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.json({
+      msg: "invalid auth",
+    });
+    return;
+  }
+
+  const user = await clerkClient.users.getUser(userId)
   const userDetails = await prisma.user.findFirst({ where: { id: userId } });
   if (!userDetails) {
     res.json({

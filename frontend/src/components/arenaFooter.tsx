@@ -1,5 +1,6 @@
 import { answerAtom, currentSectionAtom, sectionAtom, testTimerAtom } from "@/atom/atom";
 import { BASE_URL } from "@/config/utils";
+import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { useAtom, useAtomValue } from "jotai";
 import React from "react";
@@ -12,6 +13,7 @@ function ArenaFooter({ id }: { id: string | undefined }) {
   const [currentSection, setCurrentSection] = useAtom(currentSectionAtom);
   const navigate = useNavigate();
   const time = useAtomValue(testTimerAtom);
+  const auth = useAuth();
   return (
     <div className="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
       <div className="flex items-center space-x-4">
@@ -134,6 +136,7 @@ function ArenaFooter({ id }: { id: string | undefined }) {
               }
             });
             try {
+              const token = await auth.getToken();
               // managing state first 
               await axios.post(`${BASE_URL}/api/v1/test/submit`, {
                 remainingHour: time.hour,
@@ -145,7 +148,7 @@ function ArenaFooter({ id }: { id: string | undefined }) {
                 solution: requiredSolution
               }, {
                 headers: {
-                  Authorization: localStorage.getItem("token"),
+                  Authorization: token
                 }
               });
               toast.success("Submitted successfully");

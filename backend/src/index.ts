@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { Request, response, Response } from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
@@ -8,6 +9,8 @@ import { adminUserRouter } from "./routes/adminUser";
 import { adminRouter } from "./routes/admin";
 import { submissionRouter } from "./routes/viewSubmission";
 import { feedbackRouter } from "./routes/feedback";
+import { clerkMiddleware } from "@clerk/express";
+import { webhookRouter } from "./routes/webhook";
 
 
 declare global {
@@ -19,6 +22,7 @@ declare global {
 }
 const app = express();
 export const prisma = new PrismaClient();
+app.use(clerkMiddleware());
 app.use(express.json());
 app.use(cors());
 
@@ -33,6 +37,7 @@ app.use("/api/v1/admin/user", adminUserRouter);
 app.use("/api/v1/admin/", adminRouter);
 app.use("/api/v1/admin/submission", submissionRouter);
 app.use("/api/v1/admin/feedback", feedbackRouter);
+app.use("/api/webhook/user", webhookRouter);
 
 
 

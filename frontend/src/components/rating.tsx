@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import axios from "axios";
 import { BASE_URL } from "@/config/utils";
 import Review from "./review";
+import { useAuth } from "@clerk/clerk-react";
 
 interface Review {
   id: string,
@@ -22,6 +23,7 @@ export default function Rating() {
   const [meaning, setMeaning] = useState<string>("");
   const [reviews, setReview] = useState<Review[]>([]);
 
+  const auth = useAuth();
   useEffect(() => {
     const main = async () => {
       try {
@@ -71,6 +73,7 @@ export default function Rating() {
     }} />
     <Button variant="primary" onClick={async () => {
       try {
+        const token = await auth.getToken();
         setLoading(true);
         await axios.post(`${BASE_URL}/api/v1/review`, {
           message: comment,
@@ -78,7 +81,7 @@ export default function Rating() {
           meaning: meaning == "Needs improvement" ? "Needs_Improvement" : meaning
         }, {
           headers: {
-            Authorization: localStorage.getItem("token")
+            Authorization: token
           }
         });
         setLoading(false);

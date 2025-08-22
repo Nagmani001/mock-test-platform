@@ -14,11 +14,13 @@ import { useAtomValue } from "jotai"
 import { answerAtom, testTimerAtom } from "@/atom/atom"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "@clerk/clerk-react"
 
 export function DialogDemo({ id }: { id: string | undefined }) {
   const answer = useAtomValue(answerAtom);
   const time = useAtomValue(testTimerAtom);
   const navigate = useNavigate();
+  const auth = useAuth();
   return (
     <Dialog>
       <form>
@@ -71,6 +73,7 @@ export function DialogDemo({ id }: { id: string | undefined }) {
                   }
                 });
                 try {
+                  const token = await auth.getToken();
                   // managing state first 
                   await axios.post(`${BASE_URL}/api/v1/test/submit`, {
                     remainingHour: time.hour,
@@ -82,7 +85,7 @@ export function DialogDemo({ id }: { id: string | undefined }) {
                     solution: requiredSolution
                   }, {
                     headers: {
-                      Authorization: localStorage.getItem("token"),
+                      Authorization: token
                     }
                   });
                   toast.success("Submitted successfully");
