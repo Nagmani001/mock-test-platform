@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Webhook } from "svix";
+import { prisma } from "..";
 
 export const webhookRouter = Router();
 
@@ -36,14 +37,18 @@ webhookRouter.post("/", async (req: Request, res: Response) => {
       "svix-signature": svix_signature
     });
     if (event.type == "user.created") {
-      console.log("user create");
-      // create the user
-    } else if (event.type == "user.update") {
-      console.log("user updated");
-    } else if (event.type == "user.delete") {
-      console.log("user deleted");
+      console.log(event.data.email_addresses);
+      /*
+      await prisma.user.create({
+        data: {
+          id: event.data.id,
+          name: event.data.username ? event.data.username : event.data.first_name + event.data.last_name,
+          email: event.data.email_addresses,
+          password: event.data.first_name + "dummy_password" + event.data.last_name
+        }
+      });
+      */
     }
-
   } catch (err) {
     console.log(err);
     res.json({
