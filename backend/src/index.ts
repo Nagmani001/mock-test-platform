@@ -1,7 +1,6 @@
 import "dotenv/config";
-import express, { Request, response, Response } from "express";
+import express from "express";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
 import { userRouter } from "./routes/user";
 import { testRouter } from "./routes/test";
 import { reviewRouter } from "./routes/review";
@@ -21,7 +20,6 @@ declare global {
   }
 }
 const app = express();
-export const prisma = new PrismaClient();
 app.use(clerkMiddleware());
 app.use(express.json());
 app.use(cors());

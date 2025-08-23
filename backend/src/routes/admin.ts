@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { prisma } from "..";
+import { prisma } from "../prisma";
 import { createTestSchema } from "../types/zodTypes";
 
 

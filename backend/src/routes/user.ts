@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Router, Request, Response } from "express";
-import { prisma } from ".."; import { JWT_SECRET } from "../config/utils";
+import { prisma } from "../prisma";
+import { JWT_SECRET } from "../config/utils";
 import { signinSchema, signupSchema } from "../types/zodTypes";
 
 export const userRouter = Router();
