@@ -1,8 +1,7 @@
 import { Router, Request, Response } from "express";
 import { clerkClient, getAuth, requireAuth } from "@clerk/express";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 import { pauseOrSubmitSchema } from "../types/zodTypes";
-import { authMiddleware } from "../middleware.ts/middleware";
 
 export const testRouter = Router();
 

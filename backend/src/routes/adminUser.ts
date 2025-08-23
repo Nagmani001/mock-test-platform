@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { signinSchema, signupAdminSchema } from "../types/zodTypes";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 import { JWT_SECRET } from "../config/utils";
 
 

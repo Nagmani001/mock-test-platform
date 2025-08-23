@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { feedBackSchema } from "../types/zodTypes";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 
 export const feedbackRouter = Router();
 

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 import { reviewSchema } from "../types/zodTypes";
 import { clerkClient, getAuth, requireAuth } from "@clerk/express";
 

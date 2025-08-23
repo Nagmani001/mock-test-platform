@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { User, Calendar, Clock, Star, MessageSquare, Save } from 'lucide-react';
 import axios from 'axios';
 import { BASE_URL } from '@/config/utils';
+import { toast } from 'sonner';
 
 interface Question {
   id: string;
@@ -269,8 +270,10 @@ export default function Arena() {
                     rating,
                     id
                   });
+                  toast.success("graded successfully");
                   console.log(ans.data);
                 } catch (err) {
+                  toast.error("error occured while grading, try again");
                   console.log(err);
                 }
               }} className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Webhook } from "svix";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 
 export const webhookRouter = Router();
 
