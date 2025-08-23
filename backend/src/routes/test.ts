@@ -32,19 +32,21 @@ testRouter.post("/submit", requireAuth(), async (req: Request, res: Response) =>
   const parsedData = pauseOrSubmitSchema.safeParse(req.body);
   const { userId } = getAuth(req);
 
-
-
-  if (!parsedData.success || !userId) {
+  const testDetails = await prisma.test.findFirst({ where: { id: parsedData.data?.testId } });
+  if (!parsedData.success || !userId || !testDetails) {
     res.json({
       msg: "invalid data"
     });
     return;
   };
+  const totalTime = (testDetails.totalTimeHour * 3600) + (testDetails.totalTimeMinute * 60) + (testDetails.totalTimeSecond);
+  const totalRemainingTime = (parsedData.data.remainingHour * 3600) + (parsedData.data.remainingMinute * 60) + (parsedData.data.remainingSecond);
+  const timeSpentSecond = totalTime - totalRemainingTime;
 
-
-  const user = await clerkClient.users.getUser(userId)
-
-  const timeSpent = "asdf"
+  const totalTimeSpentHour = Math.floor(timeSpentSecond / 3600);
+  const totalTimeSpentMinute = Math.floor((timeSpentSecond % 3600) / 60);
+  const totalTimeSpentSecond = timeSpentSecond % 60;
+  const timeSpent = `${totalTimeSpentHour}h ${totalTimeSpentMinute}m ${totalTimeSpentSecond}s`;
 
   try {
     await prisma.testAnswer.create({
@@ -97,14 +99,14 @@ testRouter.post("/pause", requireAuth(), async (req: Request, res: Response) => 
     return;
   }
 
-  const totalTimeInSeconds = (testDetails?.totalTimeHour * 3600) + (testDetails.totalTimeMinute * 60) + (testDetails.totalTimeSecond);
-  const remainingTotalTimeInSeconds = (parsedData.data.remainingHour * 3600) + (parsedData.data.remainingMinute * 60) + parsedData.data.remainingSecond;
-  console.log("totalTimeInSeconds", totalTimeInSeconds);
-  console.log("remainingTotalTimeInSeconds ", remainingTotalTimeInSeconds);
+  const totalTime = (testDetails.totalTimeHour * 3600) + (testDetails.totalTimeMinute * 60) + (testDetails.totalTimeSecond);
+  const totalRemainingTime = (parsedData.data.remainingHour * 3600) + (parsedData.data.remainingMinute * 60) + (parsedData.data.remainingSecond);
+  const timeSpentSecond = totalTime - totalRemainingTime;
 
-
-
-  const timeSpent = "asdf";
+  const totalTimeSpentHour = Math.floor(timeSpentSecond / 3600);
+  const totalTimeSpentMinute = Math.floor((timeSpentSecond % 3600) / 60);
+  const totalTimeSpentSecond = timeSpentSecond % 60;
+  const timeSpent = `${totalTimeSpentHour}h ${totalTimeSpentMinute}m ${totalTimeSpentSecond}s`;
 
   try {
     await prisma.testAnswer.create({
