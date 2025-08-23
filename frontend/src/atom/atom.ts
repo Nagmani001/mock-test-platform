@@ -1,9 +1,9 @@
 import { atom } from "jotai";
 
 export const testTimerAtom = atom({
-  hour: 0,
-  minute: 0,
-  second: 0
+  hour: 10,
+  minute: 10,
+  second: 10
 });
 
 export const questionTimeAtom = atom([]);
