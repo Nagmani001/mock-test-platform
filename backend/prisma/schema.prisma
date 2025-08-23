@@ -46,7 +46,8 @@ model Test {
   sectionId       String
   Section         Section      @relation(fields: [sectionId], references: [id])
   question        Question[]
-  Test            TestAnswer[] // confused: should be either one to many or 
+  Test            TestAnswer[]
+  // confused: should be either one to many or 
   // one to one where the primary id which will come in testAnswer will be combined of userId testId
   // so that one user can make one submission to one test 
 }
@@ -79,6 +80,8 @@ model TestAnswer {
   solution        Solution[]
   User            User       @relation(fields: [userId], references: [id])
   Test            Test       @relation(fields: [testId], references: [id])
+
+  @@unique([userId, testId])
 }
 
 model Solution {
