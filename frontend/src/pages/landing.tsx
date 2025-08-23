@@ -23,13 +23,17 @@ export default function Landing() {
               advanced proctoring, and instant results that help you succeed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center group">
-                <SignUpButton />
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </div>
-              <div className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors">
-                <SignInButton />
-              </div>
+              <SignUpButton>
+                <div className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center group">
+                  <h1>Sign Up </h1>
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </SignUpButton>
+              <SignInButton>
+                <div className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors">
+                  <h1>Sign In</h1>
+                </div>
+              </SignInButton>
             </div>
           </div>
         </div>
