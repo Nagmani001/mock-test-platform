@@ -129,7 +129,7 @@ submissionRouter.get("/getOne/:id", async (req: Request, res: Response) => {
 
 submissionRouter.get("/getProblemOne/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
-  const testAnswerId = await prisma.testAnswer.findFirst({ where: { id: id } });
+  const testAnswerId = await prisma.testAnswer.findFirst({ where: { testId: id } });
   if (!testAnswerId) {
     res.json({
       msg: "error occured"

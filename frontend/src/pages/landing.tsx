@@ -1,32 +1,33 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Shield, BarChart3, Clock, Star } from 'lucide-react';
-import { SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { SignInButton, SignUpButton, useAuth } from '@clerk/clerk-react';
 
 export default function Landing() {
+  const auth = useAuth();
+  const navigate = useNavigate();
+  if (auth.isSignedIn) {
+    navigate("/tests");
+  }
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 lg:py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               The Future of
               <span className="text-blue-600 block">Online Testing</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Experience secure, comprehensive, and intelligent test-taking with real-time analytics,
               advanced proctoring, and instant results that help you succeed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center group"
-              >
+              <div className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center group">
                 <SignUpButton />
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </div>
-              <div
-                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors"
-              >
+              <div className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors">
                 <SignInButton />
               </div>
             </div>
@@ -36,20 +37,20 @@ export default function Landing() {
 
       {/* Features Section */}
       <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Why Choose TestPro?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
               Our platform combines cutting-edge technology with user-friendly design to deliver
               the most reliable testing experience available.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center group hover:shadow-lg transition-shadow p-8 rounded-xl">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
+            <div className="text-center group hover:shadow-md transition-shadow p-6 rounded-lg border border-gray-100">
+              <div className="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-100 transition-colors">
                 <BarChart3 className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Comprehensive Analytics</h3>
@@ -59,8 +60,8 @@ export default function Landing() {
               </p>
             </div>
 
-            <div className="text-center group hover:shadow-lg transition-shadow p-8 rounded-xl">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
+            <div className="text-center group hover:shadow-md transition-shadow p-6 rounded-lg border border-gray-100">
+              <div className="bg-green-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-green-100 transition-colors">
                 <Shield className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Secure Testing Environment</h3>
@@ -70,8 +71,8 @@ export default function Landing() {
               </p>
             </div>
 
-            <div className="text-center group hover:shadow-lg transition-shadow p-8 rounded-xl">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-200 transition-colors">
+            <div className="text-center group hover:shadow-md transition-shadow p-6 rounded-lg border border-gray-100">
+              <div className="bg-purple-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-100 transition-colors">
                 <Clock className="h-8 w-8 text-purple-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Real-time Results</h3>
@@ -86,12 +87,12 @@ export default function Landing() {
 
       {/* Testimonials Section */}
       <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Trusted by Thousands
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600">
               See what our users are saying about their TestPro experience
             </p>
           </div>
@@ -117,7 +118,7 @@ export default function Landing() {
                 rating: 5
               }
             ].map((testimonial, index) => (
-              <div key={index} className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div key={index} className="bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
@@ -140,12 +141,12 @@ export default function Landing() {
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Get Started?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+          <p className="text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
             Join thousands of satisfied users and experience the future of online testing today.
           </p>
           <Link
             to="/signup"
-            className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-colors inline-flex items-center group"
+            className="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-colors inline-flex items-center group"
           >
             Create Your Account
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -155,7 +156,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="bg-gray-900 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center space-x-2 mb-4">

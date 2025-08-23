@@ -4,6 +4,8 @@ import Signup from "./pages/signup";
 import Signin from "./pages/signin";
 import Tests from "./pages/test";
 import Arena from "./pages/arena";
+import Result from "./pages/result";
+
 
 export default function App() {
   return <>
@@ -15,6 +17,8 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/tests" element={<Tests />} />
         <Route path="/tests/:id" element={<Arena />} />
+        <Route path="/result/:id" element={<Result />} />
+
       </Routes>
     </BrowserRouter>
   </>

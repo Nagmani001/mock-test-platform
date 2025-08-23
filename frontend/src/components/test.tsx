@@ -13,23 +13,37 @@ export default function DescriptiveTestCard({
 }) {
   const navigate = useNavigate();
   return (
-    <div className="border rounded-md p-4 shadow-sm w-3xl mx-auto">
-      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-      <hr className="my-2" />
-      <div className="flex justify-between items-center flex-wrap text-sm text-gray-600">
-        <div className="flex flex-wrap gap-x-4 gap-y-1">
-          <span>
-            <span className="font-medium text-gray-400">Questions :</span> {questions}
-          </span>
-          <span>
-            <span className="font-medium text-gray-400">Time :</span> {time}
-          </span>
-        </div>
-        <div className="text-purple-700 font-medium text-sm flex items-center gap-1">
-          <button className="cursor-pointer" onClick={() => {
-            navigate(`/tests/${id}`);
-          }}>Start</button>
-          <button className="text-black cursor-pointer">View Results</button>
+    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow w-full">
+      <h2 className="text-lg font-semibold text-gray-900 mb-4 leading-tight">{title}</h2>
+      <div className="border-t border-gray-100 pt-4 mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+            <span className="flex items-center gap-2">
+              <span className="font-medium text-gray-500">Questions:</span>
+              <span className="font-semibold text-gray-700">{questions}</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="font-medium text-gray-500">Time:</span>
+              <span className="font-semibold text-gray-700">{time}</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              className="cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+              onClick={() => {
+                navigate(`/tests/${id}`);
+              }}
+            >
+              Start
+            </button>
+            <button
+              onClick={() => {
+                navigate("/result/" + id);
+              }}
+              className="cursor-pointer text-gray-600 hover:text-gray-800 font-medium text-sm transition-colors">
+              View Results
+            </button>
+          </div>
         </div>
       </div>
     </div>

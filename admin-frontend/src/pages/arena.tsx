@@ -58,7 +58,6 @@ export default function Arena() {
       rating: ratings[questionId],
       feedback: feedback[questionId]
     });
-    // In a real app, this would make an API call
   };
 
   const formatDate = (dateString: string) => {
