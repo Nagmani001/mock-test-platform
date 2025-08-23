@@ -27,6 +27,7 @@ export default function Arena() {
       top: 0
     })
     navigate("/tests");
+
   }
 
   useEffect(() => {
