@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { BASE_URL } from "../config/utils";
 import ArenaNav from "../components/arenaNav";
 import ArenaFooter from "../components/arenaFooter";
@@ -9,6 +9,8 @@ import SecondaryNav from "../components/secondaryNav";
 import LeftPanel from "@/components/panel";
 import { useAtom, useSetAtom } from "jotai";
 import { answerAtom, questionAtom, sectionAtom, testTimerAtom } from "@/atom/atom";
+import { useAuth } from "@clerk/clerk-react";
+import { toast } from "sonner";
 
 export default function Arena() {
   const questionId = useParams();
@@ -16,7 +18,16 @@ export default function Arena() {
   const setAnswer = useSetAtom(answerAtom);
   const setquestionTimer = useSetAtom(testTimerAtom);
   const setSection = useSetAtom(sectionAtom);
+  const auth = useAuth();
+  const navigate = useNavigate();
 
+  if (!auth.isSignedIn) {
+    toast.error("please sign in first to attempt the test")
+    window.scrollTo({
+      top: 0
+    })
+    navigate("/tests");
+  }
 
   useEffect(() => {
     const main = async () => {

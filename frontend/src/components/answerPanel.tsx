@@ -41,7 +41,7 @@ export default function AnserPanel({ words }: {
                   }}
                   value={x.answer}
                   placeholder="Start typing your answer here..."
-                  className="h-full resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
+                  className="h-[60vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
                 />
               );
             }

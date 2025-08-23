@@ -3,7 +3,7 @@ import { BASE_URL } from "@/config/utils";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { useAtom, useAtomValue } from "jotai";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -14,6 +14,46 @@ function ArenaFooter({ id }: { id: string | undefined }) {
   const navigate = useNavigate();
   const time = useAtomValue(testTimerAtom);
   const auth = useAuth();
+
+  useEffect(() => {
+    const main = async () => {
+      const requiredSolution = answer.map((x: any) => {
+        return {
+          answer: x.answer,
+          status: x.status,
+          questionId: x.id,
+          wordsNumber: x.answer.split(" ").length
+        }
+      });
+      try {
+        const token = await auth.getToken();
+        // managing state first 
+        await axios.post(`${BASE_URL}/api/v1/test/submit`, {
+          remainingHour: time.hour,
+          remainingMinute: time.minute,
+          remainingSecond: time.second,
+          type: "Completed",
+          testId: id,
+          submittedAt: new Date(),
+          solution: requiredSolution
+        }, {
+          headers: {
+            Authorization: token
+          }
+        });
+        toast.success("Submitted successfully");
+        alert("submitted successfully");
+        navigate("/tests");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (time.hour == 0 && time.minute == 0 && time.second == 0) {
+      main();
+    }
+  }, [time]);
+
+
   return (
     <div className="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
       <div className="flex items-center space-x-4">
