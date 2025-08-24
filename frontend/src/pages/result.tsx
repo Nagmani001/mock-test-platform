@@ -10,13 +10,15 @@ export default function Result() {
 
   useEffect(() => {
     const main = async () => {
-      const answerDetails = await axios.get(`https://be.mocktest.nagmaniupadhyay.com.np/api/getProblemOne/${id}`);
-      if (answerDetails.status != 200) {
-        alert("make sure you have submitted the test");
+      try {
+        const answerDetails = await axios.get(`https://be.mocktest.nagmaniupadhyay.com.np/api/getProblemOne/${id}`);
+        console.log(answerDetails.data.msg);
+        setSubmission(answerDetails.data.msg);
+      } catch (err) {
+        alert("please make sure you have submitted the test");
         navigate("/tests");
+        console.log(err);
       }
-      console.log(answerDetails.data.msg);
-      setSubmission(answerDetails.data.msg);
     };
     main();
   }, []);
