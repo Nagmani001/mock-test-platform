@@ -11,7 +11,7 @@ export const answerAtom = atom([]);
 
 export const sectionAtom = atom([]);
 
-export const currentSectionAtom = atom("ESSAY");
+export const currentSectionAtom = atom<null | string>(null);
 
 
 export const questionAtom = atom({

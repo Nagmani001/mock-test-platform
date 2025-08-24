@@ -8,7 +8,7 @@ import TimerSection from "../components/timeSection";
 import SecondaryNav from "../components/secondaryNav";
 import LeftPanel from "@/components/panel";
 import { useAtom, useSetAtom } from "jotai";
-import { answerAtom, questionAtom, sectionAtom, testTimerAtom } from "@/atom/atom";
+import { answerAtom, currentSectionAtom, questionAtom, sectionAtom, testTimerAtom } from "@/atom/atom";
 import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";
 
@@ -17,6 +17,7 @@ export default function Arena() {
   const [questionInfo, setQuestionInfo] = useAtom(questionAtom);
   const setAnswer = useSetAtom(answerAtom);
   const setquestionTimer = useSetAtom(testTimerAtom);
+  const setCurrentSection = useSetAtom(currentSectionAtom);
   const setSection = useSetAtom(sectionAtom);
   const auth = useAuth();
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function Arena() {
           return x.type
         });
         setSection(array);
+        setCurrentSection(array[0]);
 
         const { id, title, totalTimeHour, totalTimeMinute, totalTimeSecond, question } = res.data.msg;
         const actualQuestion = question.map((x: any) => {
