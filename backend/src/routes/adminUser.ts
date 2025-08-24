@@ -17,7 +17,7 @@ adminUserRouter.post("/signup", async (req, res) => {
   }
 
   if (parsedData.data.adminCreatePassword != JWT_SECRET) {
-    res.status(401).json({
+    res.status(403).json({
       msg: "invalid auth",
     });
     return;
