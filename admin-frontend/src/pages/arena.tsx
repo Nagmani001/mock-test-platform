@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { User, Calendar, Clock, Star, MessageSquare, Save } from 'lucide-react';
 import axios from 'axios';
 import { BASE_URL } from '@/config/utils';
@@ -36,6 +36,8 @@ export default function Arena() {
   const [ratings, setRatings] = useState<{ [key: string]: number }>({});
   const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
   const [submission, setSubmissions] = useState<SubmissionDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const main = async () => {
@@ -255,6 +257,7 @@ export default function Arena() {
             </div>
             <div className="flex space-x-3">
               <button onClick={async () => {
+                setLoading(true);
                 const feedbacks: any = [];
                 const rating: any = [];
 
@@ -268,7 +271,7 @@ export default function Arena() {
                 }
                 try {
 
-                  const ans = await axios.post(`${BASE_URL}/feedback/grade`, {
+                  await axios.post(`${BASE_URL}/feedback/grade`, {
                     feedbacks,
                     rating,
                     id
@@ -277,15 +280,19 @@ export default function Arena() {
                       Authorization: localStorage.getItem("token"),
                     }
                   });
+                  setLoading(false);
                   toast.success("graded successfully");
-                  console.log(ans.data);
+                  await new Promise(r => setTimeout(r, 1500));
+                  navigate("/submissions");
                 } catch (err) {
                   toast.error("error occured while grading, try again");
                   console.log(err);
                 }
               }} className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                Mark as Graded
-              </button>
+                {loading ?
+                  <span className="loading loading-dots loading-lg"></span>
+                  : "Mark as Graded"
+                }</button>
             </div>
           </div>
         </div>
