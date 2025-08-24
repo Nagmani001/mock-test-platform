@@ -1,15 +1,20 @@
 import axios from "axios";
 import { User, Calendar, Clock, Star } from 'lucide-react';
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Result() {
   const { id } = useParams<{ id: string }>();
   const [submission, setSubmission] = useState<any>({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const main = async () => {
       const answerDetails = await axios.get(`https://be.mocktest.nagmaniupadhyay.com.np/api/getProblemOne/${id}`);
+      if (answerDetails.status != 200) {
+        alert("make sure you have submitted the test");
+        navigate("/tests");
+      }
       console.log(answerDetails.data.msg);
       setSubmission(answerDetails.data.msg);
     };

@@ -7,7 +7,7 @@ resultRouter.get("/getProblemOne/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const testAnswerId = await prisma.testAnswer.findFirst({ where: { testId: id } });
   if (!testAnswerId) {
-    res.json({
+    res.status(401).json({
       msg: "error occured"
     });
     return;
@@ -35,7 +35,7 @@ resultRouter.get("/getProblemOne/:id", async (req: Request, res: Response) => {
   });
 
   if (!testAnswer || !userDetails || !testDetails) {
-    res.json({
+    res.status(401).json({
       msg: "error occured"
     })
     return;
