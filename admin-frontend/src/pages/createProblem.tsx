@@ -26,6 +26,7 @@ interface TestData {
 }
 
 const CreateProblemPage: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const [testData, setTestData] = useState<TestData>({
     title: '',
     totalQuestions: 0,
@@ -84,7 +85,7 @@ const CreateProblemPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     const finalData = {
       ...testData,
       questions
@@ -97,16 +98,20 @@ const CreateProblemPage: React.FC = () => {
         totalTimeHour: finalData.totalTimeHour,
         totalTimeMinute: finalData.totalTimeMinute,
         totalTimeSecond: finalData.totalTimeSecond,
-        sectionId: finalData.sectionId,
+        sectionId: finalData.sectionId == "Descriptive writing" && "2cff8ad6-8959-4614-b060-7c9a9bb6a7d0",
         questions: finalData.questions
       });
+      setLoading(false);
       toast.success("Test created successfully");
+      await new Promise(r => setTimeout(r, 1500));
+      window.location.reload();
     } catch (err: any) {
       if (err.status == 400) {
         toast.error("Something went wrong , Please try again later")
       }
     }
   };
+  console.log(testData.sectionId);
 
   return (
     <div className="space-y-6">
@@ -155,7 +160,7 @@ const CreateProblemPage: React.FC = () => {
                 value={testData.sectionId}
                 onChange={(e) => {
                   if (e.target.value == "Descriptive writing") {
-                    handleTestDataChange('sectionId', "2cff8ad6-8959-4614-b060-7c9a9bb6a7d0")
+                    handleTestDataChange('sectionId', e.target.value)
                   }
                 }
                 } className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.sectionId ? 'border-red-500' : 'border-gray-300'
@@ -399,7 +404,9 @@ const CreateProblemPage: React.FC = () => {
               className="flex items-center space-x-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
             >
               <Save className="w-4 h-4" />
-              <span>Create Test</span>
+              <span>{loading ?
+                <span className="loading loading-dots loading-md"></span>
+                : "Create Test"}</span>
             </button>
           </div>
         </div>

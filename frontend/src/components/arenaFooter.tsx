@@ -3,7 +3,7 @@ import { BASE_URL } from "@/config/utils";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { useAtom, useAtomValue } from "jotai";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -11,6 +11,7 @@ function ArenaFooter({ id }: { id: string | undefined }) {
   const [answer, setAnswer] = useAtom(answerAtom);
   const sectionArray = useAtomValue(sectionAtom);
   const [currentSection, setCurrentSection] = useAtom(currentSectionAtom);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const time = useAtomValue(testTimerAtom);
   const auth = useAuth();
@@ -167,6 +168,7 @@ function ArenaFooter({ id }: { id: string | undefined }) {
         </button>
         <button
           onClick={async () => {
+            setLoading(true);
             const requiredSolution = answer.map((x: any) => {
               return {
                 answer: x.answer,
@@ -177,7 +179,6 @@ function ArenaFooter({ id }: { id: string | undefined }) {
             });
             try {
               const token = await auth.getToken();
-              // managing state first 
               await axios.post(`${BASE_URL}/api/v1/test/submit`, {
                 remainingHour: time.hour,
                 remainingMinute: time.minute,
@@ -191,8 +192,6 @@ function ArenaFooter({ id }: { id: string | undefined }) {
                   Authorization: token
                 }
               });
-              toast.success("Submitted successfully");
-              alert("submitted successfully");
               navigate("/tests");
             } catch (err) {
               console.log(err);
@@ -200,10 +199,14 @@ function ArenaFooter({ id }: { id: string | undefined }) {
           }}
           className="px-8 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105"
         >
-          Submit Test
+          {loading ?
+            <span className="loading loading-dots loading-md"></span>
+            : "Submit Test"}
+
         </button>
       </div>
     </div>
   );
 }
 export default React.memo(ArenaFooter);
+
