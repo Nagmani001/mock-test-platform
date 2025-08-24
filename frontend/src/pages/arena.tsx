@@ -15,6 +15,7 @@ import { toast } from "sonner";
 export default function Arena() {
   const questionId = useParams();
   const [questionInfo, setQuestionInfo] = useAtom(questionAtom);
+
   const setAnswer = useSetAtom(answerAtom);
   const setquestionTimer = useSetAtom(testTimerAtom);
   const setCurrentSection = useSetAtom(currentSectionAtom);
