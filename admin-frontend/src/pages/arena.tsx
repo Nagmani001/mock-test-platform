@@ -39,7 +39,11 @@ export default function Arena() {
 
   useEffect(() => {
     const main = async () => {
-      const answerDetails = await axios.get(`${BASE_URL}/submission/getOne/${id}`);
+      const answerDetails = await axios.get(`${BASE_URL}/submission/getOne/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        }
+      });
       setSubmissions(answerDetails.data.msg);
     };
     main();
@@ -268,6 +272,10 @@ export default function Arena() {
                     feedbacks,
                     rating,
                     id
+                  }, {
+                    headers: {
+                      Authorization: localStorage.getItem("token"),
+                    }
                   });
                   toast.success("graded successfully");
                   console.log(ans.data);

@@ -1,4 +1,3 @@
-// TODO : zod validation in frontend 
 import React, { useState } from 'react';
 import { Plus, Trash2, Save, AlertCircle } from 'lucide-react';
 import axios from 'axios';
@@ -100,6 +99,10 @@ const CreateProblemPage: React.FC = () => {
         totalTimeSecond: finalData.totalTimeSecond,
         sectionId: finalData.sectionId == "Descriptive writing" && "2cff8ad6-8959-4614-b060-7c9a9bb6a7d0",
         questions: finalData.questions
+      }, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        }
       });
       setLoading(false);
       toast.success("Test created successfully");

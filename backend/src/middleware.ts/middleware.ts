@@ -5,8 +5,9 @@ import { JWT_SECRET } from "../config/utils";
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const token = req.headers["authorization"];
+  console.log(token);
   if (!token) {
-    res.json({
+    res.status(403).json({
       msg: "invalid auth"
     });
     return;

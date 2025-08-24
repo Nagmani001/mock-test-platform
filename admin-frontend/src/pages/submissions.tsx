@@ -23,9 +23,18 @@ const SubmissionsPage: React.FC = () => {
 
   useEffect(() => {
     const main = async () => {
-      const submission = await axios.get(`${BASE_URL}/submission/getAll`);
-      console.log(submission.data.msg);
-      setSubmissions(submission.data.msg);
+      try {
+        const submission = await axios.get(`${BASE_URL}/submission/getAll`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          }
+        });
+        console.log(submission.data.msg);
+        setSubmissions(submission.data.msg);
+      } catch (err) {
+        console.log(err);
+        navigate("/signin")
+      }
     }
     main();
   }, []);

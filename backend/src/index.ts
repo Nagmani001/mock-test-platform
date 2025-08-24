@@ -21,14 +21,13 @@ declare global {
   }
 }
 const app = express();
-app.use(clerkMiddleware());
 app.use(express.json());
 app.use(cors());
 
 // user side routes
-app.use("/api/v1/user", userRouter);
-app.use("/api/v1/test", testRouter);
-app.use("/api/v1/review", reviewRouter);
+app.use("/api/v1/user", clerkMiddleware(), userRouter);
+app.use("/api/v1/test", clerkMiddleware(), testRouter);
+app.use("/api/v1/review", clerkMiddleware(), reviewRouter);
 
 
 // admin side routes

@@ -16,14 +16,18 @@ export default function Dashboard() {
     totalSubmissions: 0
   });
   const navigate = useNavigate();
-  console.log(pageData);
 
   useEffect(() => {
     const main = async () => {
       try {
-        const data = await axios.get(`${BASE_URL}/info`);
+        const data = await axios.get(`${BASE_URL}/info`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          }
+        });
         setPageData(data.data);
       } catch (err) {
+        navigate("/signin")
         console.log(err);
       }
     }
