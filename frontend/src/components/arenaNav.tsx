@@ -26,11 +26,3 @@ export default function ArenaNav({ title, id }: {
     </div>
   )
 }
-/*
-          <div className="flex items-center space-x-3">
-            <span className="text-white font-medium text-base">{name}</span>
-            <div className="flex items-center justify-center h-10 w-10 rounded-full bg-white text-blue-600 font-bold text-lg shadow-sm">
-              {name[0].toUpperCase()}
-            </div>
-          </div>
- */

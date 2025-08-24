@@ -15,10 +15,12 @@ import { answerAtom, testTimerAtom } from "@/atom/atom"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "@clerk/clerk-react"
+import { useState } from "react"
 
 export function DialogDemo({ id }: { id: string | undefined }) {
   const answer = useAtomValue(answerAtom);
   const time = useAtomValue(testTimerAtom);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
   return (
@@ -64,6 +66,7 @@ export function DialogDemo({ id }: { id: string | undefined }) {
             </DialogClose>
             <Button
               onClick={async () => {
+                setLoading(true);
                 const requiredSolution = answer.map((x: any) => {
                   return {
                     answer: x.answer,
@@ -88,6 +91,7 @@ export function DialogDemo({ id }: { id: string | undefined }) {
                       Authorization: token
                     }
                   });
+                  setLoading(false);
                   toast.success("Submitted successfully");
                   alert("submitted successfully");
                   navigate("/tests");
@@ -97,7 +101,11 @@ export function DialogDemo({ id }: { id: string | undefined }) {
               }}
               className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white hover:from-yellow-500 hover:to-yellow-600"
             >
-              Pause Test
+              {loading ?
+                <span className="loading loading-dots loading-lg"></span>
+                :
+                "Pause Test"
+              }
             </Button>
           </DialogFooter>
         </DialogContent>
