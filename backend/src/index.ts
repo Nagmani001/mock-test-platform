@@ -11,6 +11,7 @@ import { feedbackRouter } from "./routes/feedback";
 import { clerkMiddleware } from "@clerk/express";
 import { webhookRouter } from "./routes/webhook";
 import { authMiddleware } from "./middleware.ts/middleware";
+import { resultRouter } from "./routes/result";
 
 
 declare global {
@@ -32,10 +33,14 @@ app.use("/api/v1/review", clerkMiddleware(), reviewRouter);
 
 // admin side routes
 app.use("/api/v1/admin/user", adminUserRouter);
+
 app.use("/api/v1/admin/", authMiddleware, adminRouter);
-app.use("/api/v1/admin/submission", submissionRouter);
+app.use("/api/v1/admin/submission", authMiddleware, submissionRouter);
+
 app.use("/api/v1/admin/feedback", authMiddleware, feedbackRouter);
 app.use("/api/webhook/user", webhookRouter);
+app.use("/api", resultRouter);
+
 
 
 

@@ -12,6 +12,52 @@ testRouter.get("/", async (req: Request, res: Response) => {
   });
 });
 
+
+/*
+testRouter.get("/userSpecificTest", async (req: Request, res: Response) => {
+const userId = "user_31eJvLsN5N2Yj9LYjdUctPJY844";
+const tests = await prisma.test.findMany({
+  include: {
+    Test: true
+  }
+});
+console.log("test", tests);
+/*
+const pausedOrNot = await prisma.testAnswer.findMany({
+  where: {
+    userId,
+    type: "Paused"
+  }
+});
+
+const resultViewable = await prisma.testAnswer.findMany({
+  where: {
+    userId
+  }
+});
+
+//TODO: computation logic can be optimized
+const finalTest = tests.map(x => {
+  for (let i = 0; i < resultViewable.length; i++) {
+    if (x.id == resultViewable[i].testId && resultViewable[i].status == "graded") {
+      return {
+        ...x,
+      }
+    }
+  }
+
+});
+
+console.log("test", tests);
+console.log("resultViewable", resultViewable);
+console.log("finalTest", finalTest);
+
+res.json({
+  msg: "Asdf"
+});
+})
+*/
+
 testRouter.get("/:testId", async (req: Request, res: Response) => {
   const testId = req.params.testId;
   const test = await prisma.test.findFirst({

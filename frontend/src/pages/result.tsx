@@ -9,7 +9,7 @@ export default function Result() {
 
   useEffect(() => {
     const main = async () => {
-      const answerDetails = await axios.get(`https://be.mocktest.nagmaniupadhyay.com.np/api/v1/admin/submission/getProblemOne/${id}`);
+      const answerDetails = await axios.get(`https://be.mocktest.nagmaniupadhyay.com.np/api/getProblemOne/${id}`);
       console.log(answerDetails.data.msg);
       setSubmission(answerDetails.data.msg);
     };
