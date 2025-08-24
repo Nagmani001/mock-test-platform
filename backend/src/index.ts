@@ -33,7 +33,7 @@ app.use("/api/v1/review", clerkMiddleware(), reviewRouter);
 // admin side routes
 app.use("/api/v1/admin/user", adminUserRouter);
 app.use("/api/v1/admin/", authMiddleware, adminRouter);
-app.use("/api/v1/admin/submission", authMiddleware, submissionRouter);
+app.use("/api/v1/admin/submission", submissionRouter);
 app.use("/api/v1/admin/feedback", authMiddleware, feedbackRouter);
 app.use("/api/webhook/user", webhookRouter);
 
