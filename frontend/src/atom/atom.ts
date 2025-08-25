@@ -1,5 +1,16 @@
 import { atom } from "jotai";
 
+interface Test {
+  id: string
+  title: string,
+  totalQuestions: number,
+  time: number
+}
+
+export const testAtom = atom<Test[]>([]);
+export const filteredTest = atom<Test[]>([]);
+export const searchAtom = atom("");
+
 export const testTimerAtom = atom({
   hour: 10,
   minute: 10,

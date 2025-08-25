@@ -1,6 +1,11 @@
+import { filteredTest, searchAtom, testAtom } from "@/atom/atom";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { useAtom, useAtomValue } from "jotai";
 
 export default function Nav() {
+  const [search, setSearch] = useAtom(searchAtom);
+  const tests = useAtomValue(testAtom);
+  const [filter, setFilterAtom] = useAtom(filteredTest);
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,40 +21,46 @@ export default function Nav() {
 
           {/* Search Bar */}
           <div className="hidden md:flex flex-1 max-w-lg mx-8">
-            <form className="w-full">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg 
-                    className="w-4 h-4 text-gray-400" 
-                    aria-hidden="true" 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    fill="none" 
-                    viewBox="0 0 20 20"
-                  >
-                    <path 
-                      stroke="currentColor" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth="2" 
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" 
-                    />
-                  </svg>
-                </div>
-                <input 
-                  type="search" 
-                  id="default-search" 
-                  className="block w-full pl-10 pr-20 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
-                  placeholder="Search for tests, courses..." 
-                  required 
-                />
-                <button 
-                  type="submit" 
-                  className="absolute right-1.5 top-1.5 text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-500 font-medium rounded-md text-sm px-3 py-1.5 transition-colors"
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
                 >
-                  Search
-                </button>
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
               </div>
-            </form>
+              <input
+                onClick={() => {
+                  window.scrollTo({
+                    top: 1500
+                  })
+                }}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  const newArr = tests.filter(x => x.title.includes(search));
+                  //@ts-ignore
+                  setFilterAtom(newArr);
+                  console.log(filter);
+
+                }}
+                value={search}
+                type="search"
+                id="default-search"
+                className="block w-full pl-10 pr-20 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                placeholder="Search for tests, courses..."
+                required
+              />
+            </div>
           </div>
 
           {/* User Actions */}
