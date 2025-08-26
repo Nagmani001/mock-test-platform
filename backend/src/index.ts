@@ -37,11 +37,14 @@ app.use(express.json());
 
 // domains
 app.use(cors({
-  origin:[
-    "https://adminside-87i.pages.dev/",
-    "https://mock-test-platform.pages.dev/"
-  ]
-}));
+  origin: [
+    "https://adminside-87i.pages.dev",
+    "https://mock-test-platform.pages.dev"
+  ],
+  allowedHeaders: "*",   // allow all headers
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // optional, defaults cover most
+  credentials: true }
+));
 
 // user side routes
 app.use("/api/v1/user", clerkMiddleware(), userRouter);
