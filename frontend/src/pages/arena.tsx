@@ -87,7 +87,7 @@ export default function Arena() {
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 h-20 bg-white shadow-sm border-b border-gray-200">
-        <ArenaNav title={questionInfo.title} id={questionId.id} />
+        <ArenaNav title={questionInfo.title}  />
       </div>
 
       {/* Main Content Area */}
