@@ -1,4 +1,5 @@
 import "dotenv/config";
+import {rateLimit} from "express-rate-limit";
 import express from "express";
 import cors from "cors";
 import { userRouter } from "./routes/user";
@@ -21,9 +22,26 @@ declare global {
     }
   }
 }
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,  
+	limit: 500,  
+	standardHeaders: 'draft-8',  
+	legacyHeaders: false,  
+	ipv6Subnet: 64, 
+});
+
 const app = express();
+app.use(limiter);
 app.use(express.json());
-app.use(cors());
+
+// domains
+app.use(cors({
+  origin:[
+    "https://adminside-87i.pages.dev/",
+    "https://mock-test-platform.pages.dev/"
+  ]
+}));
 
 // user side routes
 app.use("/api/v1/user", clerkMiddleware(), userRouter);
