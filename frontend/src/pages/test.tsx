@@ -142,7 +142,7 @@ export default function Tests() {
           </h1>
           <div className="space-y-4">
             <Faq
-              heading="1. What's included in the Descriptive Writing Test package for IBPS PO Mains?"
+              heading="1. What's included in the Descriptive Writing T#03989eest package for IBPS PO Mains?"
               subHeading="The package includes practice sets focused on descriptive writing, with sample PDFs available for each set. You also get 6 months of access, all exclusively available through our website."
             />
             <Faq
@@ -163,8 +163,7 @@ export default function Tests() {
             />
             <Faq
               heading="6. What type of practice sets will I find in the package?"
-              subHeading="The package includes practice sets designed to help you improve your writing skills for the IBPS PO Mains exam. These sets cover a range of topics, from essay writing to answering comprehension questions with answers."
-            />
+              subHeading="The package includes practice sets designed to help you improve your writing skills for the IBPS PO Mains exam. These sets cover a range of topics, from essay writing to answering comprehension questions with answers." />
             <Faq
               heading="7. How can I use the sample PDFs to improve my writing?"
               subHeading="The sample PDFs contain examples of the writing tasks you might face in the exam. After attempting the exercises, you can compare your responses with the model answers to see how you can improve your structure, style, and language."
