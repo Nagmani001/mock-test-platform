@@ -13,9 +13,10 @@ export default function Nav() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <img
-              src="https://guidely.in/assets/images/home/guidely-logo.svg"
+              src="https://nocache-appxdb.classx.co.in/subject/2024-04-17-0.6081054101920533.jpg"
               alt="Guidely Logo"
-              className="h-8 w-auto"
+              className="h-[50px]"
+              height="50"
             />
           </div>
 

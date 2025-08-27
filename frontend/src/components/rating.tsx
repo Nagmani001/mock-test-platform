@@ -25,7 +25,7 @@ export default function Rating() {
   const [reviews, setReview] = useState<Review[]>([]);
 
   const auth = useAuth();
-  
+
   useEffect(() => {
     const main = async () => {
       try {
@@ -43,77 +43,77 @@ export default function Rating() {
   return (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <h2 className="font-semibold text-2xl text-gray-900 mb-6">Ratings and Reviews</h2>
-      
+
       <div className="space-y-6">
         <div className="text-gray-700">How was the test Experience?</div>
-        
+
         {/* Rating Stars */}
         <div className="rating">
-          <input 
+          <input
             onChange={() => {
               setRating(1);
               setMeaning("Poor");
-            }} 
-            type="radio" 
-            name="rating-2" 
-            className="mask mask-star-2 bg-orange-400" 
-            aria-label="1 star" 
+            }}
+            type="radio"
+            name="rating-2"
+            className="mask mask-star-2 bg-orange-400"
+            aria-label="1 star"
           />
-          <input 
+          <input
             onChange={() => {
               setRating(2);
               setMeaning("Needs improvement");
             }}
-            type="radio" 
-            name="rating-2" 
-            className="mask mask-star-2 bg-orange-400" 
-            aria-label="2 star" 
-            defaultChecked 
+            type="radio"
+            name="rating-2"
+            className="mask mask-star-2 bg-orange-400"
+            aria-label="2 star"
+            defaultChecked
           />
-          <input 
+          <input
             onChange={() => {
               setRating(3);
               setMeaning("Satisfactory");
             }}
-            type="radio" 
-            name="rating-2" 
-            className="mask mask-star-2 bg-orange-400" 
-            aria-label="3 star" 
+            type="radio"
+            name="rating-2"
+            className="mask mask-star-2 bg-orange-400"
+            aria-label="3 star"
           />
-          <input 
+          <input
             onChange={() => {
               setRating(4);
               setMeaning("Good");
             }}
-            type="radio" 
-            name="rating-2" 
-            className="mask mask-star-2 bg-orange-400" 
-            aria-label="4 star" 
+            type="radio"
+            name="rating-2"
+            className="mask mask-star-2 bg-orange-400"
+            aria-label="4 star"
           />
-          <input 
+          <input
             onChange={() => {
               setRating(5);
               setMeaning("Excellent");
             }}
-            type="radio" 
-            name="rating-2" 
-            className="mask mask-star-2 bg-orange-400" 
-            aria-label="5 star" 
+            type="radio"
+            name="rating-2"
+            className="mask mask-star-2 bg-orange-400"
+            aria-label="5 star"
           />
         </div>
-        
+
         <div className="font-semibold text-base text-gray-900">{meaning}</div>
-        
-        <Textarea 
-          placeholder="Comment (optional)" 
+
+        <Textarea
+          placeholder="Comment (optional)"
           onChange={(e: any) => {
             setComment(e.target.value);
-          }} 
+          }}
           className="min-h-[100px] resize-none"
         />
-        
-        <Button 
-          variant="primary" 
+
+        <Button
+          variant="primary"
           onClick={async () => {
             try {
               const token = await auth.getToken();
@@ -132,7 +132,7 @@ export default function Rating() {
             } catch (err) {
               console.log(err);
             }
-          }} 
+          }}
           className="w-32"
           disabled={loading}
         >
@@ -147,12 +147,12 @@ export default function Rating() {
       {/* Reviews List */}
       <div className="mt-8 space-y-4">
         {reviews.map((review: Review) => (
-          <Review 
+          <Review
             key={review.id}
-            name={review.name} 
-            date={review.timeStamp} 
-            stars={review.stars} 
-            comment={review.message} 
+            name={review.name}
+            date={review.timeStamp}
+            stars={review.stars}
+            comment={review.message}
           />
         ))}
       </div>

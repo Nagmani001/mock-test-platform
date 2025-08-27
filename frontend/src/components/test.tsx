@@ -29,7 +29,7 @@ export default function DescriptiveTestCard({
           </div>
           <div className="flex items-center gap-3">
             <button
-              className="cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+              className="cursor-pointer bg-[#03989e] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#027d85] transition-colors text-sm"
               onClick={() => {
                 navigate(`/tests/${id}`);
               }}

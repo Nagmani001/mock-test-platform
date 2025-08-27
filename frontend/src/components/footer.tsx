@@ -5,57 +5,63 @@ export default function Footer() {
         <div className="md:flex md:justify-between">
           <div className="mb-8 md:mb-0">
             <a href="/" className="flex items-center">
-              <img src="/guidely.png" className="mr-3 h-10 w-10 rounded-lg" alt="Guidely Logo" />
-              <span className="self-center text-xl font-semibold">Guidely</span>
+              <img src="https://nocache-appxdb.classx.co.in/subject/2024-04-17-0.6081054101920533.jpg" className="mr-3 h-10 w-10 rounded-lg" alt="Guidely Logo" />
+              <span className="self-center text-xl font-semibold">CA Raman Luthra Classes</span>
             </a>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
               <h2 className="mb-4 text-sm font-semibold text-gray-300 uppercase">Resources</h2>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <a href="/" className="hover:text-white transition-colors">Guidely</a>
+                  <a href="/" className="hover:text-white transition-colors">CA Raman Luthra Classes</a>
                 </li>
+
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">Tailwind CSS</a>
+                  <a href="https://apps.apple.com/in/app/ca-raman-luthra-classes/id6502439991" className="hover:text-white transition-colors">App Store</a>
+                </li>
+
+                <li>
+                  <a href="https://play.google.com/store/apps/details?id=co.thanos.mvmoz1&pli=1" className="hover:text-white transition-colors">Play Store</a>
                 </li>
               </ul>
             </div>
-            
+
             <div>
               <h2 className="mb-4 text-sm font-semibold text-gray-300 uppercase">Follow us</h2>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">Github</a>
-                </li>
-                <li>
                   <a href="#" className="hover:text-white transition-colors">Discord</a>
+                </li>
+
+                <li>
+                  <a href="https://www.youtube.com/@caramanluthraclasses2973" className="hover:text-white transition-colors">Youtube</a>
                 </li>
               </ul>
             </div>
-            
+
             <div>
               <h2 className="mb-4 text-sm font-semibold text-gray-300 uppercase">Legal</h2>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                  <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">Terms & Conditions</a>
+                  <a href="/terms" className="hover:text-white transition-colors">Terms & Conditions</a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        
+
         <hr className="my-8 border-gray-800" />
-        
+
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-400">
-            © 2025 <a href="/" className="hover:text-white transition-colors">Guidely</a>. All Rights Reserved.
+            © 2025 <a href="/" className="hover:text-white transition-colors">CA Raman Luthra Classes</a>. All Rights Reserved.
           </span>
-          
+
           <div className="flex mt-4 space-x-4 sm:justify-center sm:mt-0">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
