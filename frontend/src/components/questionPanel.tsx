@@ -8,7 +8,7 @@ export default function QuestionPanel({ question }: {
       </div>
       <div className="flex-1 p-6 overflow-y-auto">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="whitespace-pre-wrap text-gray-700 text-lg leading-relaxed">
             Q. {question}
           </p>
         </div>

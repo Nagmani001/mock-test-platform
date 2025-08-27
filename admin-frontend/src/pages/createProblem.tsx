@@ -281,7 +281,8 @@ const CreateProblemPage: React.FC = () => {
                       onChange={(e) => updateQuestion(question.id, 'question', e.target.value)}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors[`question_${index}`] ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      rows={3}
+                      rows={5}
+                      cols={25}
                       placeholder="Enter the question text"
                     />
                     {errors[`question_${index}`] && (
