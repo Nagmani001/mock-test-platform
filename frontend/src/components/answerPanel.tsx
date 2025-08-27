@@ -19,7 +19,7 @@ export default function AnserPanel({ words }: {
         <h2 className="text-xl font-bold text-gray-800">Your Answer</h2>
       </div>
       <div className="flex-1 p-6 flex flex-col">
-        <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className=" bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           {answer.map((x: any) => {
             if (x.type == currentSection) {
               return (
