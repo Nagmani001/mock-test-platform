@@ -19,7 +19,7 @@ export default function AnserPanel({ words }: {
         <h2 className="text-xl font-bold text-gray-800">Your Answer</h2>
       </div>
       <div className="flex-1 p-6 flex flex-col">
-        <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 overflow-y-auto">
+        <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           {answer.map((x: any) => {
             if (x.type == currentSection) {
               return (
@@ -41,14 +41,14 @@ export default function AnserPanel({ words }: {
                   }}
                   value={x.answer}
                   placeholder="Start typing your answer here..."
-                  className="min-h-[20vh] max-h-[55vh] w-full resize-none border-0 focus:ring-0 p-4 text-gray-700 text-lg leading-relaxed"
+                  className="h-[55vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
                 />
               );
             }
             return null;
           })}
         </div>
-        <div className="mt-1 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+        <div className="mt-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
           <div className="flex justify-between items-center">
             <span className="font-medium text-gray-700">Word Count</span>
             <div className="flex items-center space-x-2">
