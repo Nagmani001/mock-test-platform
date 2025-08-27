@@ -41,14 +41,14 @@ export default function AnserPanel({ words }: {
                   }}
                   value={x.answer}
                   placeholder="Start typing your answer here..."
-                  className="h-[50vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
+                  className="h-[55vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
                 />
               );
             }
             return null;
           })}
         </div>
-        <div className="mt-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+        <div className="mt-1 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
           <div className="flex justify-between items-center">
             <span className="font-medium text-gray-700">Word Count</span>
             <div className="flex items-center space-x-2">
