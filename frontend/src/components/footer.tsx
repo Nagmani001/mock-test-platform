@@ -31,9 +31,6 @@ export default function Footer() {
             <div>
               <h2 className="mb-4 text-sm font-semibold text-gray-300 uppercase">Follow us</h2>
               <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">Discord</a>
-                </li>
 
                 <li>
                   <a href="https://www.youtube.com/@caramanluthraclasses2973" className="hover:text-white transition-colors">Youtube</a>
