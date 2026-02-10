@@ -1,5 +1,5 @@
 import "dotenv/config";
-import {rateLimit} from "express-rate-limit";
+import { rateLimit } from "express-rate-limit";
 import express from "express";
 import cors from "cors";
 import { userRouter } from "./routes/user";
@@ -24,11 +24,11 @@ declare global {
 }
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,  
-	limit: 500,  
-	standardHeaders: 'draft-8',  
-	legacyHeaders: false,  
-	ipv6Subnet: 64, 
+  windowMs: 15 * 60 * 1000,
+  limit: 500,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  ipv6Subnet: 64,
 });
 
 const app = express();
@@ -39,11 +39,14 @@ app.use(express.json());
 app.use(cors({
   origin: [
     "https://adminside-87i.pages.dev",
-    "https://mock-test-platform.pages.dev"
+    "https://mock-test-platform.pages.dev",
+    "http://localhost:5173",
+    "http://localhost:5174"
   ],
   allowedHeaders: "*",   // allow all headers
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // optional, defaults cover most
-  credentials: true }
+  credentials: true
+}
 ));
 
 // user side routes
@@ -54,10 +57,8 @@ app.use("/api/v1/review", clerkMiddleware(), reviewRouter);
 
 // admin side routes
 app.use("/api/v1/admin/user", adminUserRouter);
-
 app.use("/api/v1/admin/", authMiddleware, adminRouter);
 app.use("/api/v1/admin/submission", authMiddleware, submissionRouter);
-
 app.use("/api/v1/admin/feedback", authMiddleware, feedbackRouter);
 app.use("/api/webhook/user", webhookRouter);
 app.use("/api", resultRouter);

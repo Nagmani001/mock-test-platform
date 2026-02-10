@@ -68,6 +68,7 @@ testRouter.get("/:testId", async (req: Request, res: Response) => {
       question: true
     }
   });
+  console.log("test", test);
   res.json({
     msg: test
   })
@@ -106,8 +107,16 @@ testRouter.post("/submit", requireAuth(), async (req: Request, res: Response) =>
         userId,
         testId: parsedData.data.testId,
         solution: {
-          create: parsedData.data.solution
-        }
+          create: parsedData.data.solution.map(x => {
+            return {
+              answer: x.answer,
+              wordsNumber: x.wordsNumber,
+              status: x.status,
+              questionId: x.questionId,
+              ComprehensionAnswer: x.comprehensionAnswer
+            }
+          })
+        },
       }
     });
 

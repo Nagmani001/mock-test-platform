@@ -38,6 +38,7 @@ export const questionAtom = atom({
     words: 0,
     successMarks: 0,
     failureMarks: 0,
+    comprehension: [],
   }, {
     id: "",
     question: "",
@@ -45,6 +46,7 @@ export const questionAtom = atom({
     words: 0,
     successMarks: 0,
     failureMarks: 0,
+    comprehension: [],
   }]
 });
 

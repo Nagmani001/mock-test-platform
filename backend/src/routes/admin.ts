@@ -43,8 +43,18 @@ adminRouter.post("/create-test", async (req: Request, res: Response) => {
         totalTimeSecond: parsedData.data.totalTimeSecond,
         sectionId: parsedData.data.sectionId,
         question: {
-          create: parsedData.data.questions
-        }
+          create: parsedData.data.questions.map(x => {
+            return {
+              question: x.question,
+              type: x.type,
+              words: x.words,
+              successMarks: x.successMarks,
+              failureMarks: x.failureMarks,
+              totalMarks: x.totalMarks,
+              comprehension: x.comprehension
+            }
+          }),
+        },
       }
     });
     res.status(200).json({
@@ -57,3 +67,46 @@ adminRouter.post("/create-test", async (req: Request, res: Response) => {
     })
   }
 });
+
+
+/*
+adminRouter.post("/create-compreheision", async (req: Request, res: Response) => {
+  const parsedData = createComprehension.safeParse(req.body);
+  if (!parsedData.success) {
+    res.status(401).json({
+      msg: "invalid data",
+    })
+    return;
+  }
+  try {
+    const question = await prisma.question.create({
+      data: {
+        totalMarks: parsedData.data.totalMarks,
+        successMarks: parsedData.data.successMarks,
+        failureMarks: parsedData.data.failureMarks,
+        testId: parsedData.data.testId,
+        question: parsedData.data.title,
+        type: "COMPREHENSION"
+      }
+    });
+    Promise.all(
+      parsedData.data.questions.map(async (x: any) => {
+        await prisma.comprehenshion.create({
+          data: {
+            title: x.title,
+            questionId: question.id
+          }
+        });
+      })
+    );
+    res.json({
+      msg: "comprehenshion created successfully"
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({
+      msg: "error occured"
+    });
+  }
+});
+  */

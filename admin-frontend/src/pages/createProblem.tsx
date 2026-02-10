@@ -8,10 +8,11 @@ interface Question {
   id: string;
   question: string;
   type: string;
-  words: number;
+  words?: number;
   totalMarks: number;
   successMarks: number;
   failureMarks: number;
+  comprehension?: string[]
 }
 
 interface TestData {
@@ -64,7 +65,8 @@ const CreateProblemPage: React.FC = () => {
       words: 100,
       successMarks: 10,
       failureMarks: 0,
-      totalMarks: 0
+      totalMarks: 0,
+      comprehension: [""]
     };
     setQuestions(prev => [...prev, newQuestion]);
     setTestData(prev => ({ ...prev, totalQuestions: prev.totalQuestions + 1 }));
@@ -293,6 +295,94 @@ const CreateProblemPage: React.FC = () => {
                     )}
                   </div>
 
+                  {question.type === "COMPREHENSION" ? (
+                    <div className="space-y-3">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Comprehension Question
+                      </label>
+
+                      {question.comprehension?.map((comp, compIndex) => (
+                        <div key={compIndex} className="flex gap-x-2 items-center">
+                          <input
+                            type="text"
+                            value={comp}
+                            onChange={(e) => {
+                              setQuestions((prev) =>
+                                prev.map((q) =>
+                                  q.id === question.id
+                                    ? {
+                                      ...q,
+                                      comprehension: q.comprehension?.map((c, i) =>
+                                        i === compIndex ? e.target.value : c
+                                      ),
+                                    }
+                                    : q
+                                )
+                              );
+                            }}
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder={`Comprehension ${compIndex + 1}`}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setQuestions((prev) =>
+                                prev.map((q) =>
+                                  q.id === question.id
+                                    ? {
+                                      ...q,
+                                      comprehension: q.comprehension?.filter(
+                                        (_, i) => i !== compIndex
+                                      ),
+                                    }
+                                    : q
+                                )
+                              );
+                            }}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      ))}
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQuestions((prev) =>
+                            prev.map((q) =>
+                              q.id === question.id
+                                ? {
+                                  ...q,
+                                  comprehension: [...(q.comprehension || []), ""],
+                                }
+                                : q
+                            )
+                          );
+                        }}
+                        className="mt-2 flex items-center gap-x-2 text-blue-600 hover:text-blue-800"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Add Comprehension
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Expected Words
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={question.words}
+                        onChange={(e) =>
+                          updateQuestion(question.id, "words", parseInt(e.target.value) || 0)
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* Question Type */}
                     <div>
@@ -311,19 +401,6 @@ const CreateProblemPage: React.FC = () => {
                     </div>
 
                     {/* Word Count */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Expected Words
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        value={question.words}
-                        onChange={(e) => updateQuestion(question.id, 'words', parseInt(e.target.value) || 0)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-
 
                     {/* Success Marks */}
                     <div>
@@ -372,7 +449,6 @@ const CreateProblemPage: React.FC = () => {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
-
                   </div>
                 </div>
               </div>

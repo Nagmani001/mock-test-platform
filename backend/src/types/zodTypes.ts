@@ -41,6 +41,7 @@ export const pauseOrSubmitSchema = z.object({
     status: z.enum(["Answered", "Not_Answered", "Not_Visited", "Marked_For_Review", "Answered_And_Marked_For_Review"]),
     wordsNumber: z.number(),
     questionId: z.string(),
+    comprehensionAnswer: z.array(z.string()).optional()
   })),
 });
 
@@ -58,7 +59,8 @@ export const createTestSchema = z.object({
     successMarks: z.number(),
     failureMarks: z.number(),
     totalMarks: z.number(),
-  }))
+    comprehension: z.array(z.string()).optional()
+  })),
 });
 
 

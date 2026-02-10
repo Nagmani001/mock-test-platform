@@ -7,7 +7,7 @@ export default function AnserPanel({ words }: {
 }) {
   const [answer, setAnswer] = useAtom(answerAtom);
   const currentSection = useAtomValue(currentSectionAtom);
-
+  //TODO: problem is here  and in the whole code maybe 
   //@ts-ignore
   let wordsArr = answer.find((x: any) => x.type == currentSection)?.answer.split(" ");
   let wordsLength = wordsArr.length;
@@ -18,32 +18,64 @@ export default function AnserPanel({ words }: {
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-4">
         <h2 className="text-xl font-bold text-gray-800">Your Answer</h2>
       </div>
-      <div className="flex-1 p-6 flex flex-col">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-y-auto p-6 flex flex-col">
+        <div className="bg-black rounded-lg shadow-sm border border-gray-200">
           {answer.map((x: any) => {
             if (x.type == currentSection) {
-              return (
-                <Textarea
-                  key={x.id}
-                  onChange={(e: any) => {
-                    setAnswer((prev: any) => {
-                      const newArr = prev.map((y: any) => {
-                        if (y.id == x.id) {
-                          return {
-                            ...y,
-                            answer: e.target.value,
-                            wordsTyped: wordsLength
-                          }
-                        } else { return y }
-                      })
-                      return newArr;
-                    });
-                  }}
-                  value={x.answer}
-                  placeholder="Start typing your answer here..."
-                  className="h-[55vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
-                />
-              );
+              if (x.type == "COMPREHENSION") {
+                {
+                  x.answers.map((y: any, i: number) => {
+                    return (
+                      <Textarea
+                        key={i}
+                        onChange={(e: any) => {
+                          setAnswer((prev: any) => {
+                            return prev.map((z: any) => {
+                              if (z.id === x.id) {
+                                return {
+                                  ...z,
+                                  answers: z.answers.map((a: string, idx: number) =>
+                                    idx === i ? e.target.value : a
+                                  ),
+                                };
+                              }
+                              return z;
+                            });
+                          });
+                        }}
+                        value={y}
+                        placeholder="Start typing your answer here..."
+                        className="h-[45vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
+                      />
+                    );
+                  })
+                }
+              } else {
+
+                return (
+                  <Textarea
+                    key={x.id}
+                    onChange={(e: any) => {
+                      setAnswer((prev: any) => {
+                        const newArr = prev.map((y: any) => {
+                          if (y.id == x.id) {
+                            return {
+                              ...y,
+                              answer: e.target.value,
+                              wordsTyped: wordsLength
+                            }
+                          } else { return y }
+                        })
+                        return newArr;
+                      });
+                    }}
+                    value={x.answer}
+                    placeholder="Start typing your answer here..."
+                    className="h-[45vh] overflow-y-auto resize-none border-0 focus:ring-0 text-gray-700 text-lg leading-relaxed p-6"
+                  />
+                );
+
+              }
             }
             return null;
           })}

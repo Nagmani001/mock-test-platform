@@ -51,16 +51,29 @@ export default function Arena() {
             words: x.words,
             successMarks: x.successMarks,
             failureMarks: x.failureMarks,
+            comprehension: x.comprehension
           }
         });
         setAnswer(actualQuestion.map((x: any) => {
-          return {
-            id: x.id, // questionId
-            words: x.words, // words allowed
-            answer: "",
-            type: x.type,
-            status: "Not_Visited",
-            //TODO: you want solution time : hour , minute and second
+          console.log("hii")
+          if (x.type == "COMPREHENSION") {
+            console.log("comprehension ran")
+            return {
+              id: x.id, // questionId
+              words: x.words, // words allowed
+              answers: x.comprehension.map((_: any) => ""),
+              type: x.type,
+              status: "Not_Visited",
+            }
+          } else {
+            console.log("normal ran")
+            return {
+              id: x.id, // questionId
+              words: x.words, // words allowed
+              answer: "",
+              type: x.type,
+              status: "Not_Visited",
+            }
           }
         }));
         setquestionTimer({
@@ -87,7 +100,7 @@ export default function Arena() {
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 h-20 bg-white shadow-sm border-b border-gray-200">
-        <ArenaNav title={questionInfo.title}  />
+        <ArenaNav title={questionInfo.title} />
       </div>
 
       {/* Main Content Area */}

@@ -14,7 +14,7 @@ export default function LeftPanel() {
         <Panel defaultSize={50} className="min-w-0">
           {questionInfo.question.map(x => {
             if (x.type == currentSection) {
-              return <QuestionPanel key={x.id} question={x.question} />
+              return <QuestionPanel key={x.id} question={x.question} comprehension={x.comprehension} />
             }
           })}
         </Panel>

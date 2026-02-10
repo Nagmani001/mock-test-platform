@@ -53,16 +53,17 @@ model Test {
 }
 
 model Question {
-  id           String     @id @default(uuid())
-  question     String
-  type         TestType
-  words        Int
-  successMarks Int
-  failureMarks Int
-  totalMarks   Int
-  testId       String
-  Test         Test       @relation(fields: [testId], references: [id])
-  solution     Solution[]
+  id            String     @id @default(uuid())
+  question      String
+  type          TestType
+  words         Int?
+  successMarks  Int
+  failureMarks  Int
+  totalMarks    Int
+  testId        String
+  Test          Test       @relation(fields: [testId], references: [id])
+  solution      Solution[]
+  comprehension String[]
 }
 
 model TestAnswer {
@@ -85,16 +86,17 @@ model TestAnswer {
 }
 
 model Solution {
-  id            String         @id @default(uuid())
-  answer        String
-  wordsNumber   Int
-  status        SolutionStatus
-  adminRating   Int?
-  adminFeedBack String?
-  questionId    String
-  testAnswerId  String
-  TesaAnswer    TestAnswer     @relation(fields: [testAnswerId], references: [id])
-  question      Question       @relation(fields: [questionId], references: [id])
+  id                  String         @id @default(uuid())
+  answer              String?
+  wordsNumber         Int?
+  status              SolutionStatus
+  adminRating         Int?
+  adminFeedBack       String?
+  questionId          String
+  testAnswerId        String
+  TesaAnswer          TestAnswer     @relation(fields: [testAnswerId], references: [id])
+  question            Question       @relation(fields: [questionId], references: [id])
+  ComprehensionAnswer String[]
 }
 
 model Review {
